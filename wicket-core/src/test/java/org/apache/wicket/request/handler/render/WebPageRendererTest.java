@@ -756,69 +756,6 @@ public class WebPageRendererTest
 		Assert.assertFalse(WebPageRenderer.shouldRenderPageAndWriteResponse(ajax, onePassRender, redirectToRender, redirectPolicy, shouldPreserveClientUrl, targetEqualsCurrentUrl, newPageInstance, pageStateless));
 	}
 
-	@Test
-	public void testShouldRenderPageAndWriteResponseVariationIntegrity() {
-		int count = countVariations(new ShouldRenderPageAndWriteResponseVariations());
-		Assert.assertEquals(2*2*2*2*2*2*2*3,count);
-	}
-
-	@Test
-	public void testShouldRenderPageAndWriteResponseVariation() {
-
-		String match =
-						"    X   XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"    X   XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"        XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"        XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"    X   XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"        XXXXXXXX" +
-						"    XXXXXXXXXXXX" +
-						"        XXXXXXXX" +
-						"    XXXXXXXXXXX";
-
-		checkVariations(match,new ShouldRenderPageAndWriteResponseVariations());
-	}
-
-	@Test
-	public void testShouldRedirectToTargetUrlIntegrity() {
-		int count = countVariations(new ShouldRedirectToTargetUrl());
-		Assert.assertEquals(2*3*2*2*2*2*2,count);
-	}
-
-	@Test
-	public void testShouldRedirectToTargetUrl() {
-
-		String match =
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"   XXXXX        " +
-						"XXXXXXXXXXXXXXXX" +
-						"   XXXXX        " +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"   XXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXXX" +
-						"   XXXXXXXXXXXXX" +
-						"XXXXXXXXXXXXXXX";
-
-		checkVariations(match,new ShouldRedirectToTargetUrl());
-	}
 
 	public void testShouldRedirectToTargetUrlCondition() {
 
@@ -908,39 +845,6 @@ public class WebPageRendererTest
 		sessionTemporary=false;
 
 		Assert.assertFalse(WebPageRenderer.shouldRedirectToTargetUrl(ajax, redirectPolicy, redirectToRender, targetEqualsCurrentUrl, newPageInstance, pageStateless,sessionTemporary));
-	}
-
-	private int countVariations(AbstractVariations variations) {
-		int count=1;
-		while (variations.hasNextVariation()) {
-			count++;
-			variations.nextVariation();
-		}
-		return count;
-	}
-
-	private void checkVariations(String match,AbstractVariations variations) {
-		int idx=0;
-		while (variations.hasNextVariation()) {
-			Assert.assertEquals(variations.toString(), match.charAt(idx) == 'X', variations.getResult());
-			variations.nextVariation();
-			idx++;
-		}
-	}
-
-	private void printVariations(AbstractVariations variations) {
-		int idx=0;
-		System.out.print("\"");
-		while (variations.hasNextVariation()) {
-			System.out.print(variations.getResult() ? 'X': ' ');
-			variations.nextVariation();
-			idx++;
-			if (idx>=16) {
-				System.out.print("\"+\n\"");
-				idx=0;
-			}
-		}
-		System.out.println("\";");
 	}
 
 	/**
