@@ -68,8 +68,8 @@ public class JavaSerializer implements ISerializer
 	 * Construct.
 	 * 
 	 * @param applicationKey
-	 * @param custom
-	 *            serializable check
+	 * @param serializableCheck
+	 *            custom serializable check
 	 */
 	public JavaSerializer(final String applicationKey, ISerializableCheck serializableCheck)
 	{
@@ -268,8 +268,12 @@ public class JavaSerializer implements ISerializer
 			{
 				if (serializerAvailable)
 				{
+					// custom checks should run before serialization because only
+					// if NotSerializableException a thrown the checker is called
 					if (serializableCheck != null)
 					{
+						// if this is called and there are some errors
+						// catch NotSerializableException is unlikely to be called then
 						new SerializableChecker(null, serializableCheck).writeObject(obj);
 					}
 				}

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import junit.framework.Assert;
 
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.core.util.io.SerializableChecker.WicketNotSerializableException;
 import org.apache.wicket.core.util.io.check.AttachedModelsShouldNotApearInSerializableCheck;
 import org.apache.wicket.core.util.io.check.SerializableChecks;
 import org.apache.wicket.core.util.io.check.TypesNotAllowedSerializableCheck;

@@ -24,7 +24,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.wicket.core.util.io.SerializableChecker;
-import org.apache.wicket.core.util.io.WicketNotSerializableException;
+import org.apache.wicket.core.util.io.SerializableChecker.WicketNotSerializableException;
 import org.apache.wicket.util.Log4jEventHistory;
 import org.apache.wicket.util.value.ValueMap;
 import org.junit.Assert;

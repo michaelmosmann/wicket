@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +67,19 @@ public final class SerializableChecker extends ObjectOutputStream
 
 	/** log. */
 	private static final Logger log = LoggerFactory.getLogger(SerializableChecker.class);
+
+	/**
+	 * Exception that is thrown when a non-serializable object was found.
+	 */
+	public final class WicketNotSerializableException extends WicketRuntimeException
+	{
+		private static final long serialVersionUID = 1L;
+
+		public WicketNotSerializableException(String message, Throwable cause)
+		{
+			super(message, cause);
+		}
+	}
 
 	/**
 	 * Does absolutely nothing.
