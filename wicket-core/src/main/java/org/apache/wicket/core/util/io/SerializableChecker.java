@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * doesn't, you should fall back to e.g. re-throwing/ printing the {@link NotSerializableException}
  * you probably got before using this class.
  * </p>
- *
+ * 
  * @author eelcohillenius
  * @author Al Maw
  */
@@ -67,19 +66,6 @@ public final class SerializableChecker extends ObjectOutputStream
 
 	/** log. */
 	private static final Logger log = LoggerFactory.getLogger(SerializableChecker.class);
-
-	/**
-	 * Exception that is thrown when a non-serializable object was found.
-	 */
-	public static final class WicketNotSerializableException extends WicketRuntimeException
-	{
-		private static final long serialVersionUID = 1L;
-
-		WicketNotSerializableException(String message, Throwable cause)
-		{
-			super(message, cause);
-		}
-	}
 
 	/**
 	 * Does absolutely nothing.
@@ -286,7 +272,7 @@ public final class SerializableChecker extends ObjectOutputStream
 	 * Gets whether we can execute the tests. If false, calling {@link #check(Object)} will just
 	 * return and you are advised to rely on the {@link NotSerializableException}. Clients are
 	 * advised to call this method prior to calling the check method.
-	 *
+	 * 
 	 * @return whether security settings and underlying API etc allow for accessing the
 	 *         serialization API using introspection
 	 */
@@ -321,17 +307,26 @@ public final class SerializableChecker extends ObjectOutputStream
 
 	private final Stack<Object> stack = new Stack<Object>();
 
+	private final PrettyPrinter prettyPrinter;
+
+	private final ISerializableCheck serializableCheck;
+
 	/**
 	 * Construct.
-	 *
+	 * 
 	 * @param exception
 	 *            exception that should be set as the cause when throwing a new exception
-	 *
+	 * @param serializableCheck
+	 *            custom check
+	 * 
 	 * @throws IOException
 	 */
-	public SerializableChecker(NotSerializableException exception) throws IOException
+	public SerializableChecker(NotSerializableException exception,
+		ISerializableCheck serializableCheck) throws IOException
 	{
 		this.exception = exception;
+		this.serializableCheck = serializableCheck;
+		prettyPrinter = new PrettyPrinter();
 	}
 
 	/**
@@ -352,7 +347,8 @@ public final class SerializableChecker extends ObjectOutputStream
 	@Override
 	public void close() throws IOException
 	{
-		// do not call super.close() because SerializableChecker uses ObjectOutputStream's no-arg constructor
+		// do not call super.close() because SerializableChecker uses ObjectOutputStream's no-arg
+// constructor
 
 		// just null-ify the declared members
 		reset();
@@ -408,8 +404,13 @@ public final class SerializableChecker extends ObjectOutputStream
 
 		if (!(obj instanceof Serializable) && (!Proxy.isProxyClass(cls)))
 		{
-			throw new WicketNotSerializableException(
-				toPrettyPrintedStack(obj.getClass().getName()), exception);
+			throw new WicketNotSerializableException(prettyPrinter.prettyFormated(obj.getClass(),
+				"field that is not serializable"), exception);
+		}
+
+		if (serializableCheck != null)
+		{
+			serializableCheck.check(obj, prettyPrinter);
 		}
 
 		ObjectStreamClass desc;
@@ -691,19 +692,35 @@ public final class SerializableChecker extends ObjectOutputStream
 		return b;
 	}
 
+	class PrettyPrinter implements IPrettyPrinter
+	{
+
+		@Override
+		public String prettyFormated(Class<?> type, String cause)
+		{
+			return toPrettyPrintedStack(traceStack, type, cause);
+		}
+
+	}
+
 	/**
 	 * Dump with indentation.
-	 *
+	 * 
+	 * @param traceStack
+	 *            stack trace
 	 * @param type
 	 *            the type that couldn't be serialized
+	 * @param cause
+	 *            cause
 	 * @return A very pretty dump
 	 */
-	private final String toPrettyPrintedStack(String type)
+	private static String toPrettyPrintedStack(LinkedList<TraceSlot> traceStack, Class<?> type,
+		String cause)
 	{
 		StringBuilder result = new StringBuilder();
 		StringBuilder spaces = new StringBuilder();
 		result.append("Unable to serialize class: ");
-		result.append(type);
+		result.append(type.getName());
 		result.append("\nField hierarchy is:");
 		for (Iterator<TraceSlot> i = traceStack.listIterator(); i.hasNext();)
 		{
@@ -718,7 +735,7 @@ public final class SerializableChecker extends ObjectOutputStream
 			}
 			result.append("]");
 		}
-		result.append(" <----- field that is not serializable");
+		result.append(" <----- " + cause);
 		return result.toString();
 	}
 

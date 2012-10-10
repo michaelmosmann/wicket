@@ -30,10 +30,10 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.application.IClassResolver;
+import org.apache.wicket.core.util.io.SerializableChecker;
 import org.apache.wicket.serialize.ISerializer;
 import org.apache.wicket.settings.IApplicationSettings;
 import org.apache.wicket.util.io.IOUtils;
-import org.apache.wicket.core.util.io.SerializableChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -255,7 +255,7 @@ public class JavaSerializer implements ISerializer
 				{
 					// trigger serialization again, but this time gather
 					// some more info
-					new SerializableChecker(nsx).writeObject(obj);
+					new SerializableChecker(nsx, null).writeObject(obj);
 					// if we get here, we didn't fail, while we
 					// should;
 					throw nsx;

@@ -21,7 +21,10 @@ import java.io.Serializable;
 
 import junit.framework.Assert;
 
-import org.apache.wicket.core.util.io.SerializableChecker.WicketNotSerializableException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.core.util.io.check.AttachedModelsShouldNotApearInSerializableCheck;
+import org.apache.wicket.core.util.io.check.SerializableChecks;
+import org.apache.wicket.core.util.io.check.TypesNotAllowedSerializableCheck;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.junit.Test;
@@ -29,6 +32,7 @@ import org.junit.Test;
 /**
  * Test some standard cases which this class should detect
  * 
+ * @see org.apache.wicket.util.io.SerializableCheckerTest
  * @author mosmann
  */
 public class SerializableCheckerTest implements Serializable
@@ -41,7 +45,7 @@ public class SerializableCheckerTest implements Serializable
 	@Test(expected = WicketNotSerializableException.class)
 	public void notSerializableBean() throws IOException
 	{
-		new SerializableChecker(null).writeObject(new SimpleBean());
+		checkWith(new SimpleBean());
 	}
 
 	@Test(expected = WicketNotSerializableException.class)
@@ -56,15 +60,13 @@ public class SerializableCheckerTest implements Serializable
 		checkWith(new SerialBean());
 	}
 
-	@Test
-	// (expected = WicketNotSerializableException.class)
+	@Test(expected = WicketRuntimeException.class)
 	public void customTypeIsNotSerializable() throws IOException
 	{
 		checkWith(new CouldBeADomainType());
 	}
 
-	@Test
-	// (expected = WicketNotSerializableException.class)
+	@Test(expected = WicketRuntimeException.class)
 	public void notDetachedLDM() throws IOException
 	{
 		IModel<String> model = new LoadableDetachableModel<String>()
@@ -82,7 +84,13 @@ public class SerializableCheckerTest implements Serializable
 
 	private void checkWith(Object object) throws IOException
 	{
-		new SerializableChecker(null).writeObject(object);
+		new SerializableChecker(null, check()).writeObject(object);
+	}
+
+	private ISerializableCheck check()
+	{
+		return new SerializableChecks(new AttachedModelsShouldNotApearInSerializableCheck(),
+			new TypesNotAllowedSerializableCheck(DoNotSerializeMe.class));
 	}
 
 	public static class SimpleBean

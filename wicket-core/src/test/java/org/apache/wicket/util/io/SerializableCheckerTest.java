@@ -24,7 +24,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.wicket.core.util.io.SerializableChecker;
-import org.apache.wicket.core.util.io.SerializableChecker.WicketNotSerializableException;
+import org.apache.wicket.core.util.io.WicketNotSerializableException;
 import org.apache.wicket.util.Log4jEventHistory;
 import org.apache.wicket.util.value.ValueMap;
 import org.junit.Assert;
@@ -44,7 +44,7 @@ public class SerializableCheckerTest extends Assert
 	@Test
 	public void valueMap() throws IOException
 	{
-		SerializableChecker checker = new SerializableChecker(new NotSerializableException());
+		SerializableChecker checker = new SerializableChecker(new NotSerializableException(), null);
 		checker.writeObject(new ValueMap());
 	}
 
@@ -63,7 +63,7 @@ public class SerializableCheckerTest extends Assert
 		Log4jEventHistory logHistory = new Log4jEventHistory();
 		logger.addAppender(logHistory);
 		SerializableChecker serializableChecker = new SerializableChecker(
-			new NotSerializableException());
+			new NotSerializableException(), null);
 		try
 		{
 			serializableChecker.writeObject(new TestType1());
@@ -83,7 +83,7 @@ public class SerializableCheckerTest extends Assert
 	public void nonSerializableTypeDetection() throws IOException
 	{
 		SerializableChecker serializableChecker = new SerializableChecker(
-			new NotSerializableException());
+			new NotSerializableException(), null);
 		String exceptionMessage = null;
 		try
 		{
