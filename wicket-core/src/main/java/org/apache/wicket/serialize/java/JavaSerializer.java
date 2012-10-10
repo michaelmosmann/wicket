@@ -274,7 +274,7 @@ public class JavaSerializer implements ISerializer
 					{
 						// if this is called and there are some errors
 						// catch NotSerializableException is unlikely to be called then
-						new SerializableChecker(null, serializableCheck).writeObject(obj);
+						new SerializableChecker(serializableCheck).writeObject(obj);
 					}
 				}
 				oos.writeObject(obj);
@@ -285,7 +285,7 @@ public class JavaSerializer implements ISerializer
 				{
 					// trigger serialization again, but this time gather
 					// some more info
-					new SerializableChecker(nsx, null).writeObject(obj);
+					new SerializableChecker(nsx).writeObject(obj);
 					// if we get here, we didn't fail, while we
 					// should;
 					throw nsx;

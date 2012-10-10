@@ -326,6 +326,32 @@ public final class SerializableChecker extends ObjectOutputStream
 	private final ISerializableCheck serializableCheck;
 
 	/**
+	 * Construct if with a prior exception.
+	 * 
+	 * @param exception
+	 *            exception that should be set as the cause when throwing a new exception
+	 * 
+	 * @throws IOException
+	 */
+	public SerializableChecker(NotSerializableException exception) throws IOException
+	{
+		this(exception, null);
+	}
+
+	/**
+	 * Construct with a custom check.
+	 * 
+	 * @param serializableCheck
+	 *            custom check
+	 * 
+	 * @throws IOException
+	 */
+	public SerializableChecker(ISerializableCheck serializableCheck) throws IOException
+	{
+		this(null, serializableCheck);
+	}
+
+	/**
 	 * Construct.
 	 * 
 	 * @param exception
@@ -335,13 +361,14 @@ public final class SerializableChecker extends ObjectOutputStream
 	 * 
 	 * @throws IOException
 	 */
-	public SerializableChecker(NotSerializableException exception,
+	private SerializableChecker(NotSerializableException exception,
 		ISerializableCheck serializableCheck) throws IOException
 	{
 		this.exception = exception;
 		this.serializableCheck = serializableCheck;
 		prettyPrinter = new PrettyPrinter();
 	}
+
 
 	/**
 	 * @see java.io.ObjectOutputStream#reset()

@@ -85,7 +85,7 @@ public class SerializableCheckerTest implements Serializable
 
 	private void checkWith(Object object) throws IOException
 	{
-		new SerializableChecker(null, check()).writeObject(object);
+		new SerializableChecker(check()).writeObject(object);
 	}
 
 	private ISerializableCheck check()

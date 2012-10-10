@@ -44,7 +44,7 @@ public class SerializableCheckerTest extends Assert
 	@Test
 	public void valueMap() throws IOException
 	{
-		SerializableChecker checker = new SerializableChecker(new NotSerializableException(), null);
+		SerializableChecker checker = new SerializableChecker(new NotSerializableException());
 		checker.writeObject(new ValueMap());
 	}
 
@@ -63,7 +63,7 @@ public class SerializableCheckerTest extends Assert
 		Log4jEventHistory logHistory = new Log4jEventHistory();
 		logger.addAppender(logHistory);
 		SerializableChecker serializableChecker = new SerializableChecker(
-			new NotSerializableException(), null);
+			new NotSerializableException());
 		try
 		{
 			serializableChecker.writeObject(new TestType1());
@@ -83,7 +83,7 @@ public class SerializableCheckerTest extends Assert
 	public void nonSerializableTypeDetection() throws IOException
 	{
 		SerializableChecker serializableChecker = new SerializableChecker(
-			new NotSerializableException(), null);
+			new NotSerializableException());
 		String exceptionMessage = null;
 		try
 		{
