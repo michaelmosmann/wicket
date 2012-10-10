@@ -720,14 +720,14 @@ public final class SerializableChecker extends ObjectOutputStream
 		StringBuilder result = new StringBuilder();
 		StringBuilder spaces = new StringBuilder();
 		result.append("Unable to serialize class: ");
-		result.append(type.getName());
+		result.append(typeName(type));
 		result.append("\nField hierarchy is:");
 		for (Iterator<TraceSlot> i = traceStack.listIterator(); i.hasNext();)
 		{
 			spaces.append("  ");
 			TraceSlot slot = i.next();
 			result.append("\n").append(spaces).append(slot.fieldDescription);
-			result.append(" [class=").append(slot.object.getClass().getName());
+			result.append(" [class=").append(typeName(slot.object.getClass()));
 			if (slot.object instanceof Component)
 			{
 				Component component = (Component)slot.object;
@@ -737,6 +737,12 @@ public final class SerializableChecker extends ObjectOutputStream
 		}
 		result.append(" <----- " + cause);
 		return result.toString();
+	}
+
+	private static String typeName(Class<? extends Object> type)
+	{
+		return type.getName() +
+			(type.isAnonymousClass() ? " (" + type.getSuperclass().getName() + ")" : "");
 	}
 
 	/**
