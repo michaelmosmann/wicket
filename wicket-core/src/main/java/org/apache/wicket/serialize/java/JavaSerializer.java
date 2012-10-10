@@ -30,6 +30,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.application.IClassResolver;
+import org.apache.wicket.core.util.io.ISerializableCheck;
 import org.apache.wicket.core.util.io.SerializableChecker;
 import org.apache.wicket.serialize.ISerializer;
 import org.apache.wicket.settings.IApplicationSettings;
@@ -51,6 +52,7 @@ public class JavaSerializer implements ISerializer
 	 * The key of the application which can be used later to find the proper {@link IClassResolver}
 	 */
 	private final String applicationKey;
+	private final ISerializableCheck serializableCheck;
 
 	/**
 	 * Construct.
@@ -59,7 +61,20 @@ public class JavaSerializer implements ISerializer
 	 */
 	public JavaSerializer(final String applicationKey)
 	{
+		this(applicationKey, null);
+	}
+
+	/**
+	 * Construct.
+	 * 
+	 * @param applicationKey
+	 * @param custom
+	 *            serializable check
+	 */
+	public JavaSerializer(final String applicationKey, ISerializableCheck serializableCheck)
+	{
 		this.applicationKey = applicationKey;
+		this.serializableCheck = serializableCheck;
 	}
 
 	@Override
@@ -171,7 +186,7 @@ public class JavaSerializer implements ISerializer
 	 */
 	protected ObjectOutputStream newObjectOutputStream(OutputStream out) throws IOException
 	{
-		return new CheckerObjectOutputStream(out);
+		return new CheckerObjectOutputStream(out, serializableCheck);
 	}
 
 	/**
@@ -236,22 +251,33 @@ public class JavaSerializer implements ISerializer
 	private static class CheckerObjectOutputStream extends ObjectOutputStream
 	{
 		private final ObjectOutputStream oos;
+		private final ISerializableCheck serializableCheck;
 
-		public CheckerObjectOutputStream(OutputStream out) throws IOException
+		public CheckerObjectOutputStream(OutputStream out, ISerializableCheck serializableCheck)
+			throws IOException
 		{
 			oos = new ObjectOutputStream(out);
+			this.serializableCheck = serializableCheck;
 		}
 
 		@Override
 		protected final void writeObjectOverride(Object obj) throws IOException
 		{
+			boolean serializerAvailable = SerializableChecker.isAvailable();
 			try
 			{
+				if (serializerAvailable)
+				{
+					if (serializableCheck != null)
+					{
+						new SerializableChecker(null, serializableCheck).writeObject(obj);
+					}
+				}
 				oos.writeObject(obj);
 			}
 			catch (NotSerializableException nsx)
 			{
-				if (SerializableChecker.isAvailable())
+				if (serializerAvailable)
 				{
 					// trigger serialization again, but this time gather
 					// some more info
@@ -261,6 +287,10 @@ public class JavaSerializer implements ISerializer
 					throw nsx;
 				}
 				throw nsx;
+			}
+			catch (WicketRuntimeException wrx)
+			{
+				throw wrx;
 			}
 			catch (Exception e)
 			{

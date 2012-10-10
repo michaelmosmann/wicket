@@ -692,6 +692,11 @@ public final class SerializableChecker extends ObjectOutputStream
 		return b;
 	}
 
+	/**
+	 * a context local pretty printer class with access to trace stack
+	 * 
+	 * @author mosmann
+	 */
 	class PrettyPrinter implements IPrettyPrinter
 	{
 
