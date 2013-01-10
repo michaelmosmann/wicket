@@ -17,8 +17,9 @@
 package org.apache.wicket.protocol.http.servlet;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.string.Strings;
 
@@ -141,12 +142,14 @@ public class ErrorAttributes
 	 * @param request
 	 * @return instance of request contains error attributes or {@code null} if it does not.
 	 */
-	public static ErrorAttributes of(HttpServletRequest request, String filterPrefix)
+	@_HaveToRefactor
+	public static ErrorAttributes of(IHttpRequest request, String filterPrefix)
 	{
 		Args.notNull(request, "request");
 		Integer code = (Integer)request.getAttribute("javax.servlet.error.status_code");
 		String message = (String)request.getAttribute("javax.servlet.error.message");
-		String uri = DispatchedRequestUtils.getRequestUri(request, "javax.servlet.error.request_uri", filterPrefix);
+		String uri = DispatchedRequestUtils.getRequestUri(request,
+			"javax.servlet.error.request_uri", filterPrefix);
 		String servlet = (String)request.getAttribute("javax.servlet.error.servlet_name");
 		@SuppressWarnings("unchecked")
 		Class<? extends Throwable> type = (Class<? extends Throwable>)request.getAttribute("javax.servlet.error.exception_type");
@@ -162,13 +165,8 @@ public class ErrorAttributes
 	@Override
 	public String toString()
 	{
-		return "ErrorAttributes{" +
-				"statusCode=" + statusCode +
-				", message='" + message + '\'' +
-				", requestUri='" + requestUri + '\'' +
-				", servletName='" + servletName + '\'' +
-				", exceptionType=" + exceptionType +
-				", exception=" + exception +
-				'}';
+		return "ErrorAttributes{" + "statusCode=" + statusCode + ", message='" + message + '\'' +
+			", requestUri='" + requestUri + '\'' + ", servletName='" + servletName + '\'' +
+			", exceptionType=" + exceptionType + ", exception=" + exception + '}';
 	}
 }

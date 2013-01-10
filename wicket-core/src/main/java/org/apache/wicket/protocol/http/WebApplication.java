@@ -48,6 +48,7 @@ import org.apache.wicket.markup.html.pages.AccessDeniedPage;
 import org.apache.wicket.markup.html.pages.InternalErrorPage;
 import org.apache.wicket.markup.html.pages.PageExpiredErrorPage;
 import org.apache.wicket.markup.resolver.AutoLinkResolver;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.servlet.AbstractRequestWrapperFactory;
 import org.apache.wicket.protocol.http.servlet.FilterFactoryManager;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -443,7 +444,7 @@ public abstract class WebApplication extends Application
 	 *            the filter mapping read from web.xml
 	 * @return a WebRequest object
 	 */
-	public WebRequest newWebRequest(HttpServletRequest servletRequest, final String filterPath)
+	public WebRequest newWebRequest(IHttpRequest servletRequest, final String filterPath)
 	{
 		return new ServletWebRequest(servletRequest, filterPath);
 	}
@@ -458,7 +459,7 @@ public abstract class WebApplication extends Application
 	 *            the filter mapping read from web.xml
 	 * @return a WebRequest object
 	 */
-	WebRequest createWebRequest(HttpServletRequest servletRequest, final String filterPath)
+	WebRequest createWebRequest(IHttpRequest servletRequest, final String filterPath)
 	{
 		if (servletRequest.getCharacterEncoding() == null)
 		{

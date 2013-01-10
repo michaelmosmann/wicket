@@ -19,8 +19,7 @@ package org.apache.wicket.protocol.http.servlet;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.IMultipartWebRequest;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.Url;
@@ -42,7 +41,7 @@ public abstract class MultipartServletWebRequest extends ServletWebRequest
 	 * @param httpServletRequest
 	 * @param filterPrefix
 	 */
-	public MultipartServletWebRequest(HttpServletRequest httpServletRequest, String filterPrefix)
+	public MultipartServletWebRequest(IHttpRequest httpServletRequest, String filterPrefix)
 	{
 		super(httpServletRequest, filterPrefix);
 	}
@@ -54,8 +53,7 @@ public abstract class MultipartServletWebRequest extends ServletWebRequest
 	 * @param filterPrefix
 	 * @param url
 	 */
-	public MultipartServletWebRequest(HttpServletRequest httpServletRequest, String filterPrefix,
-		Url url)
+	public MultipartServletWebRequest(IHttpRequest httpServletRequest, String filterPrefix, Url url)
 	{
 		super(httpServletRequest, filterPrefix, url);
 	}

@@ -17,8 +17,9 @@
 package org.apache.wicket.protocol.http.servlet;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.string.Strings;
 
@@ -115,11 +116,13 @@ public class ForwardAttributes
 	 * @param request
 	 * @return instance of request contains forward attributes or {@code null} if it does not.
 	 */
-	public static ForwardAttributes of(HttpServletRequest request, String filterPrefix)
+	@_HaveToRefactor
+	public static ForwardAttributes of(IHttpRequest request, String filterPrefix)
 	{
 		Args.notNull(request, "request");
 
-		final String requestUri = DispatchedRequestUtils.getRequestUri(request, "javax.servlet.forward.request_uri", filterPrefix);
+		final String requestUri = DispatchedRequestUtils.getRequestUri(request,
+			"javax.servlet.forward.request_uri", filterPrefix);
 		final String servletPath = (String)request.getAttribute("javax.servlet.forward.servlet_path");
 		final String contextPath = (String)request.getAttribute("javax.servlet.forward.context_path");
 		final String queryString = (String)request.getAttribute("javax.servlet.forward.query_string");

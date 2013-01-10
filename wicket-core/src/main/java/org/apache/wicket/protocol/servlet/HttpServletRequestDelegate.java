@@ -36,6 +36,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 {
 	private final HttpServletRequest request;
 
+	@Override
 	public Object getAttribute(String name)
 	{
 		return request.getAttribute(name);
@@ -46,6 +47,8 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getAuthType();
 	}
 
+	@Override
+	@_HaveToRefactor
 	public Cookie[] getCookies()
 	{
 		return request.getCookies();
@@ -56,6 +59,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getAttributeNames();
 	}
 
+	@Override
 	public long getDateHeader(String name)
 	{
 		return request.getDateHeader(name);
@@ -88,7 +92,8 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getContentType();
 	}
 
-	public Enumeration getHeaders(String name)
+	@Override
+	public Enumeration<String> getHeaders(String name)
 	{
 		return request.getHeaders(name);
 	}
@@ -133,7 +138,8 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getPathInfo();
 	}
 
-	public Map getParameterMap()
+	@Override
+	public Map<String, String[]> getParameterMap()
 	{
 		return request.getParameterMap();
 	}
@@ -148,21 +154,25 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getPathTranslated();
 	}
 
+	@Override
 	public String getScheme()
 	{
 		return request.getScheme();
 	}
 
+	@Override
 	public String getContextPath()
 	{
 		return request.getContextPath();
 	}
 
+	@Override
 	public String getServerName()
 	{
 		return request.getServerName();
 	}
 
+	@Override
 	public int getServerPort()
 	{
 		return request.getServerPort();
@@ -173,6 +183,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getReader();
 	}
 
+	@Override
 	public String getQueryString()
 	{
 		return request.getQueryString();
@@ -218,11 +229,13 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		request.removeAttribute(name);
 	}
 
+	@Override
 	public String getRequestURI()
 	{
 		return request.getRequestURI();
 	}
 
+	@Override
 	public Locale getLocale()
 	{
 		return request.getLocale();

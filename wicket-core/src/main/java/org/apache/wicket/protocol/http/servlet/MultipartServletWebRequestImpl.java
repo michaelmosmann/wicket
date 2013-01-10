@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.settings.IApplicationSettings;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.lang.Bytes;
@@ -85,8 +86,8 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 * @throws FileUploadException
 	 *             Thrown if something goes wrong with upload
 	 */
-	public MultipartServletWebRequestImpl(HttpServletRequest request, String filterPrefix,
-		Bytes maxSize, String upload) throws FileUploadException
+	public MultipartServletWebRequestImpl(IHttpRequest request, String filterPrefix, Bytes maxSize,
+		String upload) throws FileUploadException
 	{
 		this(request, filterPrefix, maxSize, upload, new DiskFileItemFactory(Application.get()
 			.getResourceSettings()
@@ -110,8 +111,8 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 * @throws FileUploadException
 	 *             Thrown if something goes wrong with upload
 	 */
-	public MultipartServletWebRequestImpl(HttpServletRequest request, String filterPrefix,
-		Bytes maxSize, String upload, FileItemFactory factory) throws FileUploadException
+	public MultipartServletWebRequestImpl(IHttpRequest request, String filterPrefix, Bytes maxSize,
+		String upload, FileItemFactory factory) throws FileUploadException
 	{
 		super(request, filterPrefix);
 
@@ -416,8 +417,8 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 				if (fileItem.getSize() > maxSize.bytes())
 				{
 					String fieldName = entry.getKey();
-					FileUploadException fslex = new FileUploadBase.FileSizeLimitExceededException("The field " +
-							fieldName + " exceeds its maximum permitted " + " size of " +
+					FileUploadException fslex = new FileUploadBase.FileSizeLimitExceededException(
+						"The field " + fieldName + " exceeds its maximum permitted " + " size of " +
 							maxSize + " characters.", fileItem.getSize(), maxSize.bytes());
 					throw fslex;
 				}

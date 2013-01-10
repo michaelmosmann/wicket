@@ -16,13 +16,12 @@
  */
 package org.apache.wicket.protocol.http.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.util.string.Strings;
 
 /**
  * Common utils for dispatched (error, forward and include) requests.
- *
+ * 
  * @since 1.5.8
  */
 class DispatchedRequestUtils
@@ -30,16 +29,17 @@ class DispatchedRequestUtils
 	/**
 	 * Extracts the request uri for a dispatched request (error or forward) and removes the leading
 	 * {@code filterPrefix} from it if it is there.
-	 *
+	 * 
 	 * @param request
-	 *      the dispatched request
+	 *            the dispatched request
 	 * @param attributeName
-	 *      the name of the requets attribute in which the original request uri is stored
+	 *            the name of the requets attribute in which the original request uri is stored
 	 * @param filterPrefix
-	 *      the configured filter prefix for WicketFilter
+	 *            the configured filter prefix for WicketFilter
 	 * @return the uri of the dispatched request without the leading filterPrefix
 	 */
-	static String getRequestUri(final HttpServletRequest request, final String attributeName, String filterPrefix)
+	static String getRequestUri(final IHttpRequest request, final String attributeName,
+		String filterPrefix)
 	{
 		if (filterPrefix == null)
 		{
@@ -52,7 +52,8 @@ class DispatchedRequestUtils
 		}
 
 		String uri = (String)request.getAttribute(attributeName);
-		if (uri != null && uri.startsWith(filterPrefix) && "/".equals(filterPrefix) == false) {
+		if (uri != null && uri.startsWith(filterPrefix) && "/".equals(filterPrefix) == false)
+		{
 			uri = uri.substring(filterPrefix.length());
 		}
 

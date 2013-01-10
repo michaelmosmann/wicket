@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.util.lang.Generics;
 import org.apache.wicket.util.string.Strings;
 
@@ -69,7 +68,7 @@ public abstract class AbstractRequestWrapperFactory
 	 * @param request
 	 * @return Either return the request itself, or if needed a wrapper for the request
 	 */
-	public HttpServletRequest getWrapper(final HttpServletRequest request)
+	public IHttpRequest getWrapper(final IHttpRequest request)
 	{
 		if (isEnabled() && needsWrapper(request))
 		{
@@ -82,13 +81,13 @@ public abstract class AbstractRequestWrapperFactory
 	 * @param request
 	 * @return True, if a wrapper is needed
 	 */
-	abstract boolean needsWrapper(final HttpServletRequest request);
+	abstract boolean needsWrapper(final IHttpRequest request);
 
 	/**
 	 * @param request
 	 * @return Create a wrapper for the request
 	 */
-	abstract public HttpServletRequest newRequestWrapper(HttpServletRequest request);
+	abstract public IHttpRequest newRequestWrapper(IHttpRequest request);
 
 	/**
 	 * Convert a given comma delimited list of regular expressions into an array of compiled

@@ -37,6 +37,7 @@
 	</properties>
 	<modules>
 		<module>wicket</module>
+		<module>wicket-requestadapter</module>
 		<module>wicket-core</module>
 		<module>wicket-util</module>
 		<module>wicket-datetime</module>
@@ -225,6 +226,12 @@
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-request</artifactId>
+				<version>6.5.0-SNAPSHOT</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-requestadapter</artifactId>
 				<version>6.5.0-SNAPSHOT</version>
 				<type>jar</type>
 			</dependency>

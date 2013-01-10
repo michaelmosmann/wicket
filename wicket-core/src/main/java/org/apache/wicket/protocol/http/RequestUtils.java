@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Application;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.encoding.UrlDecoder;
@@ -181,10 +180,10 @@ public final class RequestUtils
 
 	/**
 	 * @param request
-	 *      the http servlet request to extract the charset from
+	 *            the http servlet request to extract the charset from
 	 * @return the request's charset
 	 */
-	public static Charset getCharset(HttpServletRequest request)
+	public static Charset getCharset(IHttpRequest request)
 	{
 		Charset charset = null;
 		if (request != null)

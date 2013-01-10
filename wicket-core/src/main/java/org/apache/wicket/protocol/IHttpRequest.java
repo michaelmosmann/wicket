@@ -17,6 +17,13 @@
 package org.apache.wicket.protocol;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 
 public interface IHttpRequest
 {
@@ -25,5 +32,30 @@ public interface IHttpRequest
 	String getHeader(String id);
 
 	void setCharacterEncoding(String encoding) throws UnsupportedEncodingException;
+
+	Object getAttribute(String name);
+
+	String getRequestURI();
+
+	String getScheme();
+
+	String getContextPath();
+
+	String getServerName();
+
+	int getServerPort();
+
+	String getQueryString();
+
+	@_HaveToRefactor
+	Cookie[] getCookies();
+
+	Locale getLocale();
+
+	long getDateHeader(String name);
+
+	Enumeration<String> getHeaders(String name);
+
+	Map<String, String[]> getParameterMap();
 
 }

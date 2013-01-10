@@ -32,6 +32,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.RequestUtils;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.IWritableRequestParameters;
@@ -61,7 +62,7 @@ public class ServletWebRequest extends WebRequest
 {
 	private static final Logger LOG = LoggerFactory.getLogger(ServletWebRequest.class);
 
-	private final HttpServletRequest httpServletRequest;
+	private final IHttpRequest httpServletRequest;
 
 	private final Url url;
 
@@ -78,7 +79,7 @@ public class ServletWebRequest extends WebRequest
 	 * @param filterPrefix
 	 *            contentPath + filterPath, used to extract the actual {@link Url}
 	 */
-	public ServletWebRequest(HttpServletRequest httpServletRequest, String filterPrefix)
+	public ServletWebRequest(IHttpRequest httpServletRequest, String filterPrefix)
 	{
 		this(httpServletRequest, filterPrefix, null);
 	}
@@ -91,7 +92,7 @@ public class ServletWebRequest extends WebRequest
 	 *            contentPath + filterPath, used to extract the actual {@link Url}
 	 * @param url
 	 */
-	public ServletWebRequest(HttpServletRequest httpServletRequest, String filterPrefix, Url url)
+	public ServletWebRequest(IHttpRequest httpServletRequest, String filterPrefix, Url url)
 	{
 		Args.notNull(httpServletRequest, "httpServletRequest");
 		Args.notNull(filterPrefix, "filterPrefix");
@@ -106,13 +107,15 @@ public class ServletWebRequest extends WebRequest
 		{
 			if (LOG.isDebugEnabled())
 			{
-				LOG.debug("Setting filterPrefix('{}') to '' because there is either an error or a forward. {}, {}",
-						new Object[] {filterPrefix, forwardAttributes, errorAttributes});
+				LOG.debug(
+					"Setting filterPrefix('{}') to '' because there is either an error or a forward. {}, {}",
+					new Object[] { filterPrefix, forwardAttributes, errorAttributes });
 			}
 			// the filter prefix is not needed when the current request is internal
 			// see WICKET-4387
 			this.filterPrefix = "";
-		} else
+		}
+		else
 		{
 			this.filterPrefix = filterPrefix;
 		}
@@ -199,8 +202,9 @@ public class ServletWebRequest extends WebRequest
 
 		if (LOG.isDebugEnabled())
 		{
-			LOG.debug("Calculating context relative path from: context path '{}', filterPrefix '{}', uri '{}'",
-					new Object[] {contextPath, filterPrefix, uri});
+			LOG.debug(
+				"Calculating context relative path from: context path '{}', filterPrefix '{}', uri '{}'",
+				new Object[] { contextPath, filterPrefix, uri });
 		}
 
 		final int start = contextPath.length() + filterPrefix.length() + 1;
@@ -424,7 +428,7 @@ public class ServletWebRequest extends WebRequest
 			@Override
 			public Url getOriginalUrl()
 			{
-			    return ServletWebRequest.this.getOriginalUrl();
+				return ServletWebRequest.this.getOriginalUrl();
 			}
 
 			@Override
@@ -490,7 +494,7 @@ public class ServletWebRequest extends WebRequest
 	}
 
 	@Override
-	public HttpServletRequest getContainerRequest()
+	public IHttpRequest getContainerRequest()
 	{
 		return httpServletRequest;
 	}
