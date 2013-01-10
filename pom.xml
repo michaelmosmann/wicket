@@ -846,7 +846,7 @@
 					<version>2.5</version>
 					<configuration>
 						<comparisonVersion>6.0.0</comparisonVersion>
-						<failOnError>true</failOnError>
+						<failOnError>false</failOnError>
 						<logResults>true</logResults>
 						<ignored>
 							<difference>
