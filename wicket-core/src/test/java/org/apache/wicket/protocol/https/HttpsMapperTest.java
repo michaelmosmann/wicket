@@ -25,13 +25,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.protocol.https.HttpsMapper.RedirectHandler;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Url;
@@ -74,7 +74,7 @@ public class HttpsMapperTest
 		HttpsMapper mapper = new HttpsMapper(delegate, new HttpsConfig());
 
 		ServletWebRequest request = mock(ServletWebRequest.class);
-		HttpServletRequest req = mock(HttpServletRequest.class);
+		IHttpRequest req = mock(HttpServletRequestDelegate.class);
 		when(request.getContainerRequest()).thenReturn(req);
 
 		when(req.getScheme()).thenReturn("https");
@@ -108,7 +108,7 @@ public class HttpsMapperTest
 		HttpsMapper mapper = new HttpsMapper(delegate, new HttpsConfig());
 
 		ServletWebRequest request = mock(ServletWebRequest.class);
-		HttpServletRequest req = mock(HttpServletRequest.class);
+		IHttpRequest req = mock(HttpServletRequestDelegate.class);
 		when(request.getContainerRequest()).thenReturn(req);
 
 		// rendering url to https page on http, set protocol
@@ -148,7 +148,7 @@ public class HttpsMapperTest
 		HttpsMapper mapper = new HttpsMapper(delegate, new HttpsConfig());
 
 		ServletWebRequest request = mock(ServletWebRequest.class);
-		HttpServletRequest req = mock(HttpServletRequest.class);
+		IHttpRequest req = mock(HttpServletRequestDelegate.class);
 		when(request.getContainerRequest()).thenReturn(req);
 
 		// https handler on http request, redirect to https
@@ -175,7 +175,7 @@ public class HttpsMapperTest
 		HttpsMapper mapper = new HttpsMapper(delegate, new HttpsConfig(10, 20));
 
 		ServletWebRequest request = mock(ServletWebRequest.class);
-		HttpServletRequest req = mock(HttpServletRequest.class);
+		IHttpRequest req = mock(HttpServletRequestDelegate.class);
 		when(request.getContainerRequest()).thenReturn(req);
 
 		// https handler on http request, redirect to https
@@ -196,7 +196,7 @@ public class HttpsMapperTest
 		assertThat(((RedirectHandler)resolved).getUrl(), is("http://localhost:10/ctx?foo=bar"));
 	}
 
-	private static void setupRequest(HttpServletRequest mock, String scheme, String host, int port,
+	private static void setupRequest(IHttpRequest mock, String scheme, String host, int port,
 		String uri, String query)
 	{
 		reset(mock);

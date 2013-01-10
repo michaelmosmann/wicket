@@ -16,6 +16,8 @@
  */
 package org.apache.wicket.protocol;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -54,8 +56,38 @@ public interface IHttpRequest
 
 	long getDateHeader(String name);
 
-	Enumeration<String> getHeaders(String name);
+	Enumeration getHeaders(String name);
 
 	Map<String, String[]> getParameterMap();
+
+	String getMethod();
+
+	String getContentType();
+
+	int getContentLength();
+
+	InputStream getInputStream() throws IOException;
+
+	IHttpSession getSession(boolean create);
+
+	IHttpSession getSession();
+
+	boolean isSecure();
+
+	String getRemoteAddr();
+
+	String getRemoteHost();
+
+	Enumeration getHeaderNames();
+
+	int getIntHeader(String name);
+
+	String getParameter(String name);
+
+	Enumeration getAttributeNames();
+
+	Enumeration getParameterNames();
+
+	String[] getParameterValues(String name);
 
 }

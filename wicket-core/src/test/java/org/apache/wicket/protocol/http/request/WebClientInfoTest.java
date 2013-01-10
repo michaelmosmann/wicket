@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class WebClientInfoTest
 {
 	private RequestCycle requestCycleMock;
 	private ServletWebRequest webRequest;
-	private HttpServletRequest servletRequest;
+	private IHttpRequest servletRequest;
 
 	/**
 	 * Prepare RequestCycle to be able to extract the remote address of the client
@@ -54,7 +54,7 @@ public class WebClientInfoTest
 		webRequest = mock(ServletWebRequest.class);
 		when(requestCycleMock.getRequest()).thenReturn(webRequest);
 
-		servletRequest = mock(HttpServletRequest.class);
+		servletRequest = mock(HttpServletRequestDelegate.class);
 		when(webRequest.getContainerRequest()).thenReturn(servletRequest);
 	}
 

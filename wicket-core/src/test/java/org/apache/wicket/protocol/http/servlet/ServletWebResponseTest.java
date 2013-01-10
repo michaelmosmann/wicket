@@ -24,9 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.Url;
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class ServletWebResponseTest extends Assert
 		baseUrl.setPort(80);
 		when(webRequest.getClientUrl()).thenReturn(baseUrl);
 
-		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+		IHttpRequest httpServletRequest = mock(HttpServletRequestDelegate.class);
 		when(webRequest.getContainerRequest()).thenReturn(httpServletRequest);
 		when(httpServletRequest.getCharacterEncoding()).thenReturn("UTF-8");
 

@@ -16,14 +16,14 @@
  */
 package org.apache.wicket.extensions.ajax.markup.html.form.upload;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.servlet.MultipartServletWebRequestImpl;
 import org.apache.wicket.protocol.http.servlet.UploadInfo;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.util.time.Duration;
@@ -89,8 +89,8 @@ class UploadStatusResource extends AbstractResource
 	{
 		final String upload = attributes.getParameters().get(UPLOAD_PARAMETER).toString();
 
-		final HttpServletRequest req = (HttpServletRequest)attributes.getRequest()
-			.getContainerRequest();
+		@_HaveToRefactor
+		final IHttpRequest req = (IHttpRequest)attributes.getRequest().getContainerRequest();
 
 		UploadInfo info = MultipartServletWebRequestImpl.getUploadInfo(req, upload);
 

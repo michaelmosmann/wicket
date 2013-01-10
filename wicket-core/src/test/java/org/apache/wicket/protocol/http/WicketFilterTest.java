@@ -53,6 +53,7 @@ import org.apache.wicket.mock.MockApplication;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpServletResponse;
 import org.apache.wicket.protocol.http.mock.MockServletContext;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.util.file.WebXmlFile;
@@ -363,7 +364,8 @@ public class WicketFilterTest extends Assert
 	public void ignorePaths() throws Exception
 	{
 		application = spy(new MockApplication());
-		WicketFilter filter = new WicketFilter();
+		WicketFilter filter = mock(WicketFilter.class);
+
 		filter.init(new FilterTestingConfig());
 
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -385,12 +387,15 @@ public class WicketFilterTest extends Assert
 		});
 		FilterChain chain = mock(FilterChain.class);
 
+		HttpServletRequestDelegate requestDelegate = new HttpServletRequestDelegate(request);
+		when(filter.createRequestDelegate(request)).thenReturn(requestDelegate);
+
 		// execute 3 requests - 1 for bla.js, 1 for bla.css and 1 for bla.img
 		for (int i = 0; i < 3; i++)
 		{
 			boolean isProcessed = filter.processRequest(request, response, chain);
 			assertFalse(isProcessed);
-			verify(application, Mockito.never()).newWebRequest(Matchers.eq(request),
+			verify(application, Mockito.never()).newWebRequest(Matchers.eq(requestDelegate),
 				Matchers.anyString());
 			verify(application, Mockito.never()).newWebResponse(Matchers.any(WebRequest.class),
 				Matchers.eq(response));
@@ -400,7 +405,7 @@ public class WicketFilterTest extends Assert
 		// execute the request to /something/real
 		boolean isProcessed = filter.processRequest(request, response, chain);
 		assertTrue(isProcessed);
-		verify(application).newWebRequest(Matchers.eq(request), Matchers.anyString());
+		verify(application).newWebRequest(Matchers.eq(requestDelegate), Matchers.anyString());
 		verify(application).newWebResponse(Matchers.any(WebRequest.class), Matchers.eq(response));
 		// the request is processed so the chain is not executed
 		verify(chain, Mockito.times(3)).doFilter(request, response);

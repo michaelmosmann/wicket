@@ -27,15 +27,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import org.apache.wicket.protocol.HttpRequestWrapper;
+import org.apache.wicket.protocol.IHttpRequest;
 
 /**
  * {@link href http://code.google.com/p/xebia-france/wiki/XForwardedFilter}
  * 
  * @author Juergen Donnerstag
  */
-public class XForwardedRequestWrapper extends HttpServletRequestWrapper
+public class XForwardedRequestWrapper extends HttpRequestWrapper
 {
 	private SimpleDateFormat[] dateFormats = new SimpleDateFormat[] {
 			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
@@ -60,7 +60,7 @@ public class XForwardedRequestWrapper extends HttpServletRequestWrapper
 	 * @param request
 	 */
 	@SuppressWarnings("unchecked")
-	public XForwardedRequestWrapper(final HttpServletRequest request)
+	public XForwardedRequestWrapper(final IHttpRequest request)
 	{
 		super(request);
 

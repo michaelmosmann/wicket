@@ -21,8 +21,9 @@ import java.util.regex.Pattern;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.apache.wicket.protocol.HttpRequestWrapper;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,9 +152,9 @@ public class SecuredRemoteAddressRequestWrapperFactory extends AbstractRequestWr
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpServletRequest getWrapper(final HttpServletRequest request)
+	public IHttpRequest getWrapper(final IHttpRequest request)
 	{
-		HttpServletRequest xRequest = super.getWrapper(request);
+		IHttpRequest xRequest = super.getWrapper(request);
 
 		if (log.isDebugEnabled())
 		{
@@ -169,7 +170,7 @@ public class SecuredRemoteAddressRequestWrapperFactory extends AbstractRequestWr
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean needsWrapper(final HttpServletRequest request)
+	public boolean needsWrapper(final IHttpRequest request)
 	{
 		return !request.isSecure() &&
 			matchesOne(request.getRemoteAddr(), config.securedRemoteAddresses) == false;
@@ -181,9 +182,9 @@ public class SecuredRemoteAddressRequestWrapperFactory extends AbstractRequestWr
 	 * <code>true</code>.
 	 */
 	@Override
-	public HttpServletRequest newRequestWrapper(final HttpServletRequest request)
+	public IHttpRequest newRequestWrapper(final IHttpRequest request)
 	{
-		return new HttpServletRequestWrapper(request)
+		return new HttpRequestWrapper(request)
 		{
 			@Override
 			public boolean isSecure()

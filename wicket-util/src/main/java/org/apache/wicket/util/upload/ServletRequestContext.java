@@ -19,7 +19,7 @@ package org.apache.wicket.util.upload;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
+import org.apache.wicket.protocol.IHttpRequest;
 
 /**
  * <p>
@@ -36,7 +36,7 @@ public class ServletRequestContext implements RequestContext
 	/**
 	 * The request for which the context is being provided.
 	 */
-	private final HttpServletRequest request;
+	private final IHttpRequest request;
 
 
 	// ----------------------------------------------------------- Constructors
@@ -47,7 +47,7 @@ public class ServletRequestContext implements RequestContext
 	 * @param request
 	 *            The request to which this context applies.
 	 */
-	public ServletRequestContext(final HttpServletRequest request)
+	public ServletRequestContext(final IHttpRequest request)
 	{
 		this.request = request;
 	}

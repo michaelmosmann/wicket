@@ -17,7 +17,9 @@
 package org.apache.wicket.protocol.http.servlet;
 
 import org.apache.wicket.WicketTestCase;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.junit.Test;
 
 /**
@@ -33,21 +35,22 @@ public class SecuredRemoteAddressRequestWrapperFactoryTest extends WicketTestCas
 	public void test1()
 	{
 		SecuredRemoteAddressRequestWrapperFactory factory = new SecuredRemoteAddressRequestWrapperFactory();
-		MockHttpServletRequest request = tester.getRequest();
+		MockHttpServletRequest mockedRequest = tester.getRequest();
+		IHttpRequest request = new HttpServletRequestDelegate(mockedRequest);
 
-		request.setSecure(true);
+		mockedRequest.setSecure(true);
 		assertFalse(factory.needsWrapper(request));
 
-		request.setRemoteAddr("111.222.333.444");
+		mockedRequest.setRemoteAddr("111.222.333.444");
 		assertFalse(factory.needsWrapper(request));
 
-		request.setSecure(false);
+		mockedRequest.setSecure(false);
 		assertTrue(factory.needsWrapper(request));
 
-		request.setRemoteAddr("10.222.333.444");
+		mockedRequest.setRemoteAddr("10.222.333.444");
 		assertFalse(factory.needsWrapper(request));
 
-		request.setRemoteAddr("129.222.333.444");
+		mockedRequest.setRemoteAddr("129.222.333.444");
 		assertTrue(factory.needsWrapper(request));
 	}
 }

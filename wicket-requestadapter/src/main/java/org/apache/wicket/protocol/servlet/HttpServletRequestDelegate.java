@@ -18,6 +18,7 @@ package org.apache.wicket.protocol.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.Enumeration;
@@ -25,12 +26,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.IHttpSession;
 
 public class HttpServletRequestDelegate implements IHttpRequest
 {
@@ -54,6 +54,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getCookies();
 	}
 
+	@Override
 	public Enumeration getAttributeNames()
 	{
 		return request.getAttributeNames();
@@ -77,57 +78,67 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		request.setCharacterEncoding(env);
 	}
 
+	@Override
 	public String getHeader(String name)
 	{
 		return request.getHeader(name);
 	}
 
+	@Override
 	public int getContentLength()
 	{
 		return request.getContentLength();
 	}
 
+	@Override
 	public String getContentType()
 	{
 		return request.getContentType();
 	}
 
 	@Override
-	public Enumeration<String> getHeaders(String name)
+	public Enumeration getHeaders(String name)
 	{
 		return request.getHeaders(name);
 	}
 
-	public ServletInputStream getInputStream() throws IOException
+	@Override
+	public InputStream getInputStream() throws IOException
 	{
 		return request.getInputStream();
 	}
 
+	@Override
 	public String getParameter(String name)
 	{
 		return request.getParameter(name);
 	}
 
+	@Override
 	public Enumeration getHeaderNames()
 	{
 		return request.getHeaderNames();
 	}
 
+	@Override
 	public int getIntHeader(String name)
 	{
 		return request.getIntHeader(name);
 	}
 
+	@Override
 	public Enumeration getParameterNames()
 	{
 		return request.getParameterNames();
 	}
 
+	@Override
 	public String getMethod()
 	{
 		return request.getMethod();
 	}
 
+	@Override
 	public String[] getParameterValues(String name)
 	{
 		return request.getParameterValues(name);
@@ -194,11 +205,13 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getRemoteUser();
 	}
 
+	@Override
 	public String getRemoteAddr()
 	{
 		return request.getRemoteAddr();
 	}
 
+	@Override
 	public String getRemoteHost()
 	{
 		return request.getRemoteHost();
@@ -251,6 +264,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getRequestURL();
 	}
 
+	@Override
 	public boolean isSecure()
 	{
 		return request.isSecure();
@@ -266,9 +280,10 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getServletPath();
 	}
 
-	public HttpSession getSession(boolean create)
+	@Override
+	public IHttpSession getSession(boolean create)
 	{
-		return request.getSession(create);
+		return new HttpSessionDelegate(request.getSession(create));
 	}
 
 	public String getRealPath(String path)
@@ -286,9 +301,10 @@ public class HttpServletRequestDelegate implements IHttpRequest
 		return request.getLocalName();
 	}
 
-	public HttpSession getSession()
+	@Override
+	public IHttpSession getSession()
 	{
-		return request.getSession();
+		return new HttpSessionDelegate(request.getSession());
 	}
 
 	public String getLocalAddr()
@@ -324,5 +340,9 @@ public class HttpServletRequestDelegate implements IHttpRequest
 	public HttpServletRequestDelegate(HttpServletRequest request)
 	{
 		this.request = request;
+	}
+	
+	public HttpServletRequest getHttpServletRequest() {
+		return request;
 	}
 }

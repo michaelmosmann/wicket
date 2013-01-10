@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -176,6 +178,29 @@ public final class RequestUtils
 	private static Charset getCurrentCharset()
 	{
 		return RequestCycle.get().getRequest().getCharset();
+	}
+
+	/**
+	 * @param request
+	 *            the http servlet request to extract the charset from
+	 * @return the request's charset
+	 */
+	public static Charset getCharset(HttpServletRequest request)
+	{
+		Charset charset = null;
+		if (request != null)
+		{
+			String charsetName = request.getCharacterEncoding();
+			if (charsetName != null)
+			{
+				charset = Charset.forName(charsetName);
+			}
+		}
+		if (charset == null)
+		{
+			charset = getDefaultCharset();
+		}
+		return charset;
 	}
 
 	/**

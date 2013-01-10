@@ -24,11 +24,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
+
 /**
  * A copy of the HttpSession used at the WebSocket connection creation time
- *
+ * 
  * @since 6.0
  */
+@_HaveToRefactor
 public class HttpSessionCopy implements HttpSession
 {
 	private final long creationTime;
@@ -37,12 +40,13 @@ public class HttpSessionCopy implements HttpSession
 	private final ServletContext servletContext;
 	private int maxInactiveInterval;
 
-	public HttpSessionCopy(final HttpSession originalSession) {
-		this.sessionId = originalSession.getId();
-		this.servletContext = originalSession.getServletContext();
-		this.creationTime = originalSession.getCreationTime();
+	public HttpSessionCopy(final HttpSession originalSession)
+	{
+		sessionId = originalSession.getId();
+		servletContext = originalSession.getServletContext();
+		creationTime = originalSession.getCreationTime();
 
-		this.attributes = new ConcurrentHashMap<String, Object>();
+		attributes = new ConcurrentHashMap<String, Object>();
 		Enumeration<String> attributeNames = originalSession.getAttributeNames();
 		while (attributeNames.hasMoreElements())
 		{
@@ -53,93 +57,111 @@ public class HttpSessionCopy implements HttpSession
 
 	}
 
-	public void destroy(){
+	public void destroy()
+	{
 		attributes.clear();
 	}
 
 	@Override
-	public long getCreationTime() {
+	public long getCreationTime()
+	{
 		return creationTime;
 	}
 
 	@Override
-	public String getId() {
+	public String getId()
+	{
 		return sessionId;
 	}
 
 	// TODO: Not supported for now. Must update on every WebSocket Message
 	@Override
-	public long getLastAccessedTime() {
+	public long getLastAccessedTime()
+	{
 		return 0;
 	}
 
 	@Override
-	public ServletContext getServletContext() {
+	public ServletContext getServletContext()
+	{
 		return servletContext;
 	}
 
 	@Override
-	public void setMaxInactiveInterval(int interval) {
-		this.maxInactiveInterval = interval;
+	public void setMaxInactiveInterval(int interval)
+	{
+		maxInactiveInterval = interval;
 	}
 
 	@Override
-	public int getMaxInactiveInterval() {
+	public int getMaxInactiveInterval()
+	{
 		return maxInactiveInterval;
 	}
 
 	@Override
-	public HttpSessionContext getSessionContext() {
+	public HttpSessionContext getSessionContext()
+	{
 		return null;
 	}
 
 	@Override
-	public Object getAttribute(String name) {
+	public Object getAttribute(String name)
+	{
 		return attributes.get(name);
 	}
 
 	@Override
-	public Object getValue(String name) {
+	public Object getValue(String name)
+	{
 		return attributes.get(name);
 	}
 
 	@Override
-	public Enumeration<String> getAttributeNames() {
+	public Enumeration<String> getAttributeNames()
+	{
 		return attributes.keys();
 	}
 
 	@Override
-	public String[] getValueNames() {
-		return (String[]) Collections.list(attributes.keys()).toArray();
+	public String[] getValueNames()
+	{
+		return (String[])Collections.list(attributes.keys()).toArray();
 	}
 
 	@Override
-	public void setAttribute(String name, Object value) {
+	public void setAttribute(String name, Object value)
+	{
 		attributes.put(name, value);
 	}
 
 	@Override
-	public void putValue(String name, Object value) {
+	public void putValue(String name, Object value)
+	{
 		attributes.put(name, value);
 	}
 
 	@Override
-	public void removeAttribute(String name) {
+	public void removeAttribute(String name)
+	{
 		attributes.remove(name);
 	}
 
 	@Override
-	public void removeValue(String name) {
+	public void removeValue(String name)
+	{
 		attributes.remove(name);
 	}
 
 	// TODO: Not supported for now.
 	@Override
-	public void invalidate() {
+	public void invalidate()
+	{
 	}
 
 	@Override
-	public boolean isNew() {
+	public boolean isNew()
+	{
 		return false;
 	}
 }

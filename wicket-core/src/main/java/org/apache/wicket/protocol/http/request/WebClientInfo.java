@@ -21,10 +21,9 @@ import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.core.request.ClientInfo;
 import org.apache.wicket.markup.html.pages.BrowserInfoPage;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -119,10 +118,10 @@ public class WebClientInfo extends ClientInfo
 	 * server places it in the <a
 	 * href="http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#x-headers">X-Forwarded-For</a>
 	 * Header.
-	 *
-	 * Proxies may also mask the original client IP with tokens like "hidden" or "unknown".
-	 * If so, the last proxy ip address is returned.
-	 *
+	 * 
+	 * Proxies may also mask the original client IP with tokens like "hidden" or "unknown". If so,
+	 * the last proxy ip address is returned.
+	 * 
 	 * @param requestCycle
 	 *            the request cycle
 	 * @return remoteAddr IP address of the client, using the X-Forwarded-For header and defaulting
@@ -131,7 +130,7 @@ public class WebClientInfo extends ClientInfo
 	protected String getRemoteAddr(RequestCycle requestCycle)
 	{
 		ServletWebRequest request = (ServletWebRequest)requestCycle.getRequest();
-		HttpServletRequest req = request.getContainerRequest();
+		IHttpRequest req = request.getContainerRequest();
 		String remoteAddr = request.getHeader("X-Forwarded-For");
 
 		if (remoteAddr != null)

@@ -16,15 +16,16 @@
  */
 package org.apache.wicket.protocol.http.servlet;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.IMarkupResourceStreamProvider;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
@@ -52,14 +53,16 @@ public class ServletWebRequestTest extends Assert
 		httpRequest.setURL("/" + httpRequest.getContextPath() + "/request/Uri");
 		httpRequest.setParameter("some", "parameter");
 
-		ServletWebRequest webRequest = new ServletWebRequest(httpRequest, "/");
+		ServletWebRequest webRequest = new ServletWebRequest(new HttpServletRequestDelegate(
+			httpRequest), "/");
 		Url clientUrl = webRequest.getClientUrl();
 		assertEquals("request/Uri?some=parameter", clientUrl.toString());
 
 		// simulates a request that has errors metadata
 		httpRequest.setAttribute("javax.servlet.error.request_uri",
 			"/" + httpRequest.getContextPath() + "/any/source/of/error");
-		ServletWebRequest errorWebRequest = new ServletWebRequest(httpRequest, "/");
+		ServletWebRequest errorWebRequest = new ServletWebRequest(new HttpServletRequestDelegate(
+			httpRequest), "/");
 		Url errorClientUrl = errorWebRequest.getClientUrl();
 
 		assertEquals("/any/source/of/error", errorClientUrl.toString());
@@ -78,7 +81,8 @@ public class ServletWebRequestTest extends Assert
 
 		httpRequest.setAttribute("javax.servlet.error.request_uri", problematiURI);
 
-		ServletWebRequest errorWebRequest = new ServletWebRequest(httpRequest, "");
+		ServletWebRequest errorWebRequest = new ServletWebRequest(new HttpServletRequestDelegate(
+			httpRequest), "");
 
 		Url errorClientUrl = errorWebRequest.getClientUrl();
 
@@ -101,7 +105,8 @@ public class ServletWebRequestTest extends Assert
 
 		httpRequest.setAttribute("javax.servlet.forward.request_uri", forwardedURI);
 
-		ServletWebRequest forwardWebRequest = new ServletWebRequest(httpRequest, "");
+		ServletWebRequest forwardWebRequest = new ServletWebRequest(new HttpServletRequestDelegate(
+			httpRequest), "");
 
 		Url forwardClientUrl = forwardWebRequest.getClientUrl();
 
@@ -125,7 +130,7 @@ public class ServletWebRequestTest extends Assert
 			}
 
 			@Override
-			public WebRequest newWebRequest(HttpServletRequest servletRequest, String filterPath)
+			public WebRequest newWebRequest(IHttpRequest servletRequest, String filterPath)
 			{
 				return new CustomServletWebRequest(servletRequest, filterPath);
 			}
@@ -145,7 +150,7 @@ public class ServletWebRequestTest extends Assert
 	/**
 	 * Assert that ServletWebRequest#getClientUrl() will throw an AbortWithHttpErrorCodeException
 	 * with error code 400 (Bad Request) when an Ajax request doesn't provide the base url.
-	 *
+	 * 
 	 * https://issues.apache.org/jira/browse/WICKET-4841
 	 */
 	@Test
@@ -153,8 +158,9 @@ public class ServletWebRequestTest extends Assert
 	{
 
 		MockHttpServletRequest httpRequest = new MockHttpServletRequest(null, null, null);
-		httpRequest.setHeader(ServletWebRequest.HEADER_AJAX, "true");
-		ServletWebRequest webRequest = new ServletWebRequest(httpRequest, "");
+		httpRequest.setHeader(WebRequest.HEADER_AJAX, "true");
+		ServletWebRequest webRequest = new ServletWebRequest(new HttpServletRequestDelegate(
+			httpRequest), "");
 		try
 		{
 			webRequest.getClientUrl();
@@ -185,7 +191,7 @@ public class ServletWebRequestTest extends Assert
 
 	private static class CustomServletWebRequest extends ServletWebRequest
 	{
-		public CustomServletWebRequest(HttpServletRequest httpServletRequest, String filterPrefix)
+		public CustomServletWebRequest(IHttpRequest httpServletRequest, String filterPrefix)
 		{
 			super(httpServletRequest, filterPrefix);
 		}

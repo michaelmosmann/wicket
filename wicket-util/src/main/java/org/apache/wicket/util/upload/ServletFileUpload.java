@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.IHttpRequest;
+
 /**
  * <p>
  * High level API for processing file uploads.
@@ -123,7 +125,7 @@ public class ServletFileUpload extends FileUpload
 	 * @throws FileUploadException
 	 *             if there are problems reading/parsing the request or storing files.
 	 */
-	public List<FileItem> parseRequest(final HttpServletRequest request) throws FileUploadException
+	public List<FileItem> parseRequest(final IHttpRequest request) throws FileUploadException
 	{
 		return parseRequest(new ServletRequestContext(request));
 	}
@@ -145,8 +147,8 @@ public class ServletFileUpload extends FileUpload
 	 *             An I/O error occurred. This may be a network error while communicating with the
 	 *             client or a problem while storing the uploaded content.
 	 */
-	public FileItemIterator getItemIterator(final HttpServletRequest request)
-		throws FileUploadException, IOException
+	public FileItemIterator getItemIterator(final IHttpRequest request) throws FileUploadException,
+		IOException
 	{
 		return super.getItemIterator(new ServletRequestContext(request));
 	}

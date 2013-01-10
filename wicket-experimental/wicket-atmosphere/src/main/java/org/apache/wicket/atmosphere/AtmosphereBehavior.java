@@ -31,6 +31,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.resource.CoreLibrariesContributor;
@@ -104,7 +105,10 @@ public class AtmosphereBehavior extends Behavior
 		ServletWebRequest request = (ServletWebRequest)requestCycle.getRequest();
 
 		// Grab a Meteor
-		Meteor meteor = Meteor.build(request.getContainerRequest());
+		HttpServletRequestDelegate containerRequest = (HttpServletRequestDelegate)request.getContainerRequest();
+		HttpServletRequest servletRequest = containerRequest.getHttpServletRequest();
+
+		Meteor meteor = Meteor.build(servletRequest);
 		String uuid = meteor.getAtmosphereResource().uuid();
 		component.getPage().setMetaData(ATMOSPHERE_UUID, uuid);
 		findEventBus().registerPage(uuid, component.getPage());

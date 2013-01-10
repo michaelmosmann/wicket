@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.IHttpRequest;
@@ -326,7 +324,7 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 */
 	protected void onUploadUpdate(int bytesUploaded, int total)
 	{
-		HttpServletRequest request = getContainerRequest();
+		IHttpRequest request = getContainerRequest();
 		UploadInfo info = getUploadInfo(request, upload);
 		if (info == null)
 		{
@@ -450,7 +448,7 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 *            upload identifier
 	 * @return {@link UploadInfo} object from session, or null if not found
 	 */
-	public static UploadInfo getUploadInfo(final HttpServletRequest req, String upload)
+	public static UploadInfo getUploadInfo(final IHttpRequest req, String upload)
 	{
 		Args.notNull(req, "req");
 		return (UploadInfo)req.getSession().getAttribute(getSessionKey(upload));
@@ -466,7 +464,7 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 * @param uploadInfo
 	 *            {@link UploadInfo} object to be put into session, not null
 	 */
-	public static void setUploadInfo(final HttpServletRequest req, String upload,
+	public static void setUploadInfo(final IHttpRequest req, String upload,
 		final UploadInfo uploadInfo)
 	{
 		Args.notNull(req, "req");
@@ -483,7 +481,7 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	 * @param upload
 	 *            upload identifier
 	 */
-	public static void clearUploadInfo(final HttpServletRequest req, String upload)
+	public static void clearUploadInfo(final IHttpRequest req, String upload)
 	{
 		Args.notNull(req, "req");
 		Args.notNull(upload, "upload");

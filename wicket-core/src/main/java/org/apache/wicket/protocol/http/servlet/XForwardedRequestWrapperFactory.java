@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.IHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -632,7 +632,7 @@ public class XForwardedRequestWrapperFactory extends AbstractRequestWrapperFacto
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean needsWrapper(final HttpServletRequest request)
+	public boolean needsWrapper(final IHttpRequest request)
 	{
 		boolean rtn = matchesOne(request.getRemoteAddr(), config.allowedInternalProxies);
 		if (rtn == false)
@@ -652,7 +652,7 @@ public class XForwardedRequestWrapperFactory extends AbstractRequestWrapperFacto
 	 * @return Either the original request or the wrapper
 	 */
 	@Override
-	public HttpServletRequest newRequestWrapper(final HttpServletRequest request)
+	public IHttpRequest newRequestWrapper(final IHttpRequest request)
 	{
 		String remoteIp = null;
 
