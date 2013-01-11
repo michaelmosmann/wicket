@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
+import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
 import org.apache.wicket.request.Url;
 import org.junit.Assert;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class ServletWebResponseTest extends Assert
 		when(webRequest.getContainerRequest()).thenReturn(httpServletRequest);
 		when(httpServletRequest.getCharacterEncoding()).thenReturn("UTF-8");
 
-		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
+		IHttpResponse httpServletResponse = mock(HttpServletResponseDelegate.class);
 		when(httpServletResponse.encodeRedirectURL(Matchers.anyString())).thenReturn(url);
 		StringWriter writer = new StringWriter();
 		when(httpServletResponse.getWriter()).thenReturn(new PrintWriter(writer));
@@ -105,7 +105,7 @@ public class ServletWebResponseTest extends Assert
 		baseUrl.setPort(80);
 		when(webRequest.getClientUrl()).thenReturn(baseUrl);
 
-		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
+		IHttpResponse httpServletResponse = mock(HttpServletResponseDelegate.class);
 		when(httpServletResponse.encodeRedirectURL(Matchers.anyString())).thenReturn(url);
 
 		ServletWebResponse webResponse = new ServletWebResponse(webRequest, httpServletResponse);

@@ -16,7 +16,45 @@
  */
 package org.apache.wicket.protocol;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+
+import javax.servlet.http.Cookie;
+
 public interface IHttpResponse
 {
+
+	void addCookie(Cookie cookie);
+
+	void addHeader(String name, String value);
+
+	void setContentType(String type);
+
+	void setDateHeader(String name, long date);
+
+	void setHeader(String name, String value);
+
+	PrintWriter getWriter() throws IOException;
+
+	OutputStream getOutputStream() throws IOException;
+
+	void setStatus(int sc);
+
+	void sendError(int sc, String msg) throws IOException;
+
+	void sendError(int sc) throws IOException;
+
+	String encodeURL(String url);
+
+	String encodeRedirectURL(String url);
+
+	void sendRedirect(String location) throws IOException;
+
+	void flushBuffer() throws IOException;
+
+	boolean isCommitted();
+
+	void reset();
 
 }

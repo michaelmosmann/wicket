@@ -17,10 +17,10 @@
 package org.apache.wicket.protocol.servlet;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Locale;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,6 +35,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		this.response = response;
 	}
 
+	@Override
 	public void addCookie(Cookie cookie)
 	{
 		response.addCookie(cookie);
@@ -45,6 +46,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		return response.containsHeader(name);
 	}
 
+	@Override
 	public String encodeURL(String url)
 	{
 		return response.encodeURL(url);
@@ -55,6 +57,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		return response.getCharacterEncoding();
 	}
 
+	@Override
 	public String encodeRedirectURL(String url)
 	{
 		return response.encodeRedirectURL(url);
@@ -75,26 +78,31 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		return response.encodeRedirectUrl(url);
 	}
 
-	public ServletOutputStream getOutputStream() throws IOException
+	@Override
+	public OutputStream getOutputStream() throws IOException
 	{
 		return response.getOutputStream();
 	}
 
+	@Override
 	public void sendError(int sc, String msg) throws IOException
 	{
 		response.sendError(sc, msg);
 	}
 
+	@Override
 	public PrintWriter getWriter() throws IOException
 	{
 		return response.getWriter();
 	}
 
+	@Override
 	public void sendError(int sc) throws IOException
 	{
 		response.sendError(sc);
 	}
 
+	@Override
 	public void sendRedirect(String location) throws IOException
 	{
 		response.sendRedirect(location);
@@ -105,6 +113,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		response.setCharacterEncoding(charset);
 	}
 
+	@Override
 	public void setDateHeader(String name, long date)
 	{
 		response.setDateHeader(name, date);
@@ -115,6 +124,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		response.addDateHeader(name, date);
 	}
 
+	@Override
 	public void setHeader(String name, String value)
 	{
 		response.setHeader(name, value);
@@ -125,11 +135,13 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		response.setContentLength(len);
 	}
 
+	@Override
 	public void setContentType(String type)
 	{
 		response.setContentType(type);
 	}
 
+	@Override
 	public void addHeader(String name, String value)
 	{
 		response.addHeader(name, value);
@@ -150,6 +162,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		response.setBufferSize(size);
 	}
 
+	@Override
 	public void setStatus(int sc)
 	{
 		response.setStatus(sc);
@@ -165,6 +178,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		return response.getBufferSize();
 	}
 
+	@Override
 	public void flushBuffer() throws IOException
 	{
 		response.flushBuffer();
@@ -175,11 +189,13 @@ public class HttpServletResponseDelegate implements IHttpResponse
 		response.resetBuffer();
 	}
 
+	@Override
 	public boolean isCommitted()
 	{
 		return response.isCommitted();
 	}
 
+	@Override
 	public void reset()
 	{
 		response.reset();

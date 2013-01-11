@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
+import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
@@ -184,7 +185,7 @@ public class WicketFilter implements Filter
 				WebRequest webRequest = application.createWebRequest(
 					createRequestDelegate(httpServletRequest), filterPath);
 				WebResponse webResponse = application.createWebResponse(webRequest,
-					httpServletResponse);
+					createResponseDelegate(httpServletResponse));
 
 				RequestCycle requestCycle = application.createRequestCycle(webRequest, webResponse);
 				res = processRequestCycle(requestCycle, webResponse, httpServletRequest,
@@ -224,6 +225,12 @@ public class WicketFilter implements Filter
 			}
 		}
 		return res;
+	}
+
+	protected HttpServletResponseDelegate createResponseDelegate(
+		HttpServletResponse httpServletResponse)
+	{
+		return new HttpServletResponseDelegate(httpServletResponse);
 	}
 
 	protected HttpServletRequestDelegate createRequestDelegate(HttpServletRequest httpServletRequest)

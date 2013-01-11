@@ -19,9 +19,9 @@ package org.apache.wicket.protocol.http.servlet;
 import java.io.IOException;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.UrlRenderer;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -36,7 +36,7 @@ import org.apache.wicket.util.time.Time;
  */
 public class ServletWebResponse extends WebResponse
 {
-	private final HttpServletResponse httpServletResponse;
+	private final IHttpResponse httpServletResponse;
 	private final ServletWebRequest webRequest;
 
 	private boolean redirect = false;
@@ -47,7 +47,7 @@ public class ServletWebResponse extends WebResponse
 	 * @param webRequest
 	 * @param httpServletResponse
 	 */
-	public ServletWebResponse(ServletWebRequest webRequest, HttpServletResponse httpServletResponse)
+	public ServletWebResponse(ServletWebRequest webRequest, IHttpResponse httpServletResponse)
 	{
 		Args.notNull(webRequest, "webRequest");
 		Args.notNull(httpServletResponse, "httpServletResponse");
@@ -173,10 +173,9 @@ public class ServletWebResponse extends WebResponse
 		Args.notNull(url, "url");
 
 		/*
-		  WICKET-4645 - always pass absolute url to the web container for encoding
-		  because when REDIRECT_TO_BUFFER is in use Wicket may render PageB when
-		  PageA is actually the requested one and the web container cannot resolve
-		  the base url properly
+		 * WICKET-4645 - always pass absolute url to the web container for encoding because when
+		 * REDIRECT_TO_BUFFER is in use Wicket may render PageB when PageA is actually the requested
+		 * one and the web container cannot resolve the base url properly
 		 */
 		UrlRenderer urlRenderer = RequestCycle.get().getUrlRenderer();
 		Url relativeUrl = Url.parse(url);
@@ -203,10 +202,9 @@ public class ServletWebResponse extends WebResponse
 		Args.notNull(url, "url");
 
 		/*
-		  WICKET-4854 - always pass absolute url to the web container for encoding
-		  because when REDIRECT_TO_BUFFER is in use Wicket may render PageB when
-		  PageA is actually the requested one and the web container cannot resolve
-		  the base url properly
+		 * WICKET-4854 - always pass absolute url to the web container for encoding because when
+		 * REDIRECT_TO_BUFFER is in use Wicket may render PageB when PageA is actually the requested
+		 * one and the web container cannot resolve the base url properly
 		 */
 		UrlRenderer urlRenderer = new UrlRenderer(webRequest);
 		Url relativeUrl = Url.parse(url);
@@ -302,7 +300,7 @@ public class ServletWebResponse extends WebResponse
 	}
 
 	@Override
-	public HttpServletResponse getContainerResponse()
+	public IHttpResponse getContainerResponse()
 	{
 		return httpServletResponse;
 	}

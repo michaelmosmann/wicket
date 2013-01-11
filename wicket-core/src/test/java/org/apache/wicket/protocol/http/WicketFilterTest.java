@@ -54,6 +54,7 @@ import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpServletResponse;
 import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
+import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.util.file.WebXmlFile;
@@ -386,6 +387,8 @@ public class WicketFilterTest extends Assert
 		FilterChain chain = mock(FilterChain.class);
 
 		final HttpServletRequestDelegate requestDelegate = new HttpServletRequestDelegate(request);
+		final HttpServletResponseDelegate responseDelegate = new HttpServletResponseDelegate(
+			response);
 		WicketFilter filter = new WicketFilter()
 		{
 			@Override
@@ -393,6 +396,13 @@ public class WicketFilterTest extends Assert
 				HttpServletRequest httpServletRequest)
 			{
 				return requestDelegate;
+			}
+
+			@Override
+			protected HttpServletResponseDelegate createResponseDelegate(
+				HttpServletResponse httpServletResponse)
+			{
+				return responseDelegate;
 			}
 		};
 		filter.init(false, new FilterTestingConfig());
@@ -405,7 +415,7 @@ public class WicketFilterTest extends Assert
 			verify(application, Mockito.never()).newWebRequest(Matchers.eq(requestDelegate),
 				Matchers.anyString());
 			verify(application, Mockito.never()).newWebResponse(Matchers.any(WebRequest.class),
-				Matchers.eq(response));
+				Matchers.eq(responseDelegate));
 			verify(chain, Mockito.times(i + 1)).doFilter(request, response);
 		}
 
@@ -413,7 +423,8 @@ public class WicketFilterTest extends Assert
 		boolean isProcessed = filter.processRequest(request, response, chain);
 		assertTrue(isProcessed);
 		verify(application).newWebRequest(Matchers.eq(requestDelegate), Matchers.anyString());
-		verify(application).newWebResponse(Matchers.any(WebRequest.class), Matchers.eq(response));
+		verify(application).newWebResponse(Matchers.any(WebRequest.class),
+			Matchers.eq(responseDelegate));
 		// the request is processed so the chain is not executed
 		verify(chain, Mockito.times(3)).doFilter(request, response);
 	}

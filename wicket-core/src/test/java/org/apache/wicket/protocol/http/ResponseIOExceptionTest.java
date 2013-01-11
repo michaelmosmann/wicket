@@ -18,11 +18,11 @@ package org.apache.wicket.protocol.http;
 
 import java.net.SocketException;
 
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.http.servlet.ResponseIOException;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
+import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
@@ -55,7 +55,8 @@ public class ResponseIOExceptionTest extends Assert
 			@Override
 			protected Response newServletWebResponse(ServletWebRequest servletWebRequest)
 			{
-				return new ProblematicResponse(servletWebRequest, getResponse());
+				return new ProblematicResponse(servletWebRequest, new HttpServletResponseDelegate(
+					getResponse()));
 			}
 		};
 		tester.setExposeExceptions(false);
@@ -104,8 +105,7 @@ public class ResponseIOExceptionTest extends Assert
 		 * @param webRequest
 		 * @param httpServletResponse
 		 */
-		public ProblematicResponse(ServletWebRequest webRequest,
-			HttpServletResponse httpServletResponse)
+		public ProblematicResponse(ServletWebRequest webRequest, IHttpResponse httpServletResponse)
 		{
 			super(webRequest, httpServletResponse);
 		}

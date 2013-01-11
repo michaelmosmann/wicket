@@ -49,6 +49,7 @@ import org.apache.wicket.markup.html.pages.InternalErrorPage;
 import org.apache.wicket.markup.html.pages.PageExpiredErrorPage;
 import org.apache.wicket.markup.resolver.AutoLinkResolver;
 import org.apache.wicket.protocol.IHttpRequest;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.http.servlet.AbstractRequestWrapperFactory;
 import org.apache.wicket.protocol.http.servlet.FilterFactoryManager;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -508,7 +509,7 @@ public abstract class WebApplication extends Application
 	 * @return a WebResponse object
 	 */
 	protected WebResponse newWebResponse(final WebRequest webRequest,
-		final HttpServletResponse httpServletResponse)
+		final IHttpResponse httpServletResponse)
 	{
 		return new ServletWebResponse((ServletWebRequest)webRequest, httpServletResponse);
 	}
@@ -524,7 +525,7 @@ public abstract class WebApplication extends Application
 	 * @return the configured WebResponse object
 	 */
 	WebResponse createWebResponse(final WebRequest webRequest,
-		final HttpServletResponse httpServletResponse)
+		final IHttpResponse httpServletResponse)
 	{
 		WebResponse webResponse = newWebResponse(webRequest, httpServletResponse);
 

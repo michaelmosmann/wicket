@@ -95,6 +95,7 @@ import org.apache.wicket.mock.MockPageManager;
 import org.apache.wicket.mock.MockRequestParameters;
 import org.apache.wicket.page.IPageManager;
 import org.apache.wicket.page.IPageManagerContext;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.http.IMetaDataBufferingWebResponse;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
@@ -105,6 +106,8 @@ import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
 import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
+import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.request.IExceptionMapper;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
@@ -147,6 +150,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @since 1.2.6
  */
+@_HaveToRefactor
 public class BaseWicketTester
 {
 	/** log. */
@@ -449,7 +453,8 @@ public class BaseWicketTester
 	 */
 	protected Response newServletWebResponse(final ServletWebRequest servletWebRequest)
 	{
-		return new WicketTesterServletWebResponse(servletWebRequest, response);
+		return new WicketTesterServletWebResponse(servletWebRequest,
+			new HttpServletResponseDelegate(response));
 	}
 
 	/**
@@ -2801,8 +2806,7 @@ public class BaseWicketTester
 	{
 		private List<Cookie> cookies = new ArrayList<Cookie>();
 
-		public WicketTesterServletWebResponse(ServletWebRequest request,
-			MockHttpServletResponse response)
+		public WicketTesterServletWebResponse(ServletWebRequest request, IHttpResponse response)
 		{
 			super(request, response);
 		}
