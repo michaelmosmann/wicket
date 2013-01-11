@@ -16,8 +16,8 @@
  */
 package org.apache.wicket.atmosphere;
 
-import javax.servlet.http.Cookie;
-
+import org.apache.wicket.protocol.Cookie;
+import org.apache.wicket.protocol.servlet.HttpServletCookies;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.time.Time;
@@ -48,7 +48,7 @@ class AtmosphereWebResponse extends WebResponse
 	@Override
 	public void addCookie(Cookie cookie)
 	{
-		response.addCookie(cookie);
+		response.addCookie(HttpServletCookies.toServletCookie(cookie));
 	}
 
 	@Override

@@ -21,9 +21,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.IHttpResponse;
 
 public class HttpServletResponseDelegate implements IHttpResponse
@@ -38,7 +38,7 @@ public class HttpServletResponseDelegate implements IHttpResponse
 	@Override
 	public void addCookie(Cookie cookie)
 	{
-		response.addCookie(cookie);
+		response.addCookie(HttpServletCookies.toServletCookie(cookie));
 	}
 
 	public boolean containsHeader(String name)

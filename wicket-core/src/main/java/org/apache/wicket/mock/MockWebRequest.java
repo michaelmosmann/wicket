@@ -24,9 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.Url.QueryParameter;
 import org.apache.wicket.request.UrlUtils;

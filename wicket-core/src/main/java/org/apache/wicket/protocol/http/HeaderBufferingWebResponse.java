@@ -16,9 +16,8 @@
  */
 package org.apache.wicket.protocol.http;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.wicket.protocol.Cookie;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.time.Time;
@@ -27,8 +26,8 @@ import org.apache.wicket.util.time.Time;
  * Response that keeps headers in buffers until the first content is written.
  * 
  * This is necessary to get {@link #reset()} working without removing the JSESSIONID cookie. When
- * {@link HttpServletResponse#reset()} is called it removes all cookies, including the JSESSIONID
- * cookie - see <a href="https://issues.apache.org/bugzilla/show_bug.cgi?id=26183">Bug 26183</a>.
+ * {@link IHttpResponse#reset()} is called it removes all cookies, including the JSESSIONID cookie -
+ * see <a href="https://issues.apache.org/bugzilla/show_bug.cgi?id=26183">Bug 26183</a>.
  * 
  * Calling {@link #reset()} on this response clears the buffered meta data, if there is already any
  * content written it throws {@link IllegalStateException}.

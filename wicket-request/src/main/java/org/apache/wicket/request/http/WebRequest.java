@@ -20,8 +20,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
-
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;

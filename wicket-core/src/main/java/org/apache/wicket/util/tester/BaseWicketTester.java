@@ -2804,7 +2804,7 @@ public class BaseWicketTester
 		implements
 			IMetaDataBufferingWebResponse
 	{
-		private List<Cookie> cookies = new ArrayList<Cookie>();
+		private List<org.apache.wicket.protocol.Cookie> cookies = new ArrayList<org.apache.wicket.protocol.Cookie>();
 
 		public WicketTesterServletWebResponse(ServletWebRequest request, IHttpResponse response)
 		{
@@ -2812,7 +2812,7 @@ public class BaseWicketTester
 		}
 
 		@Override
-		public void addCookie(Cookie cookie)
+		public void addCookie(org.apache.wicket.protocol.Cookie cookie)
 		{
 			super.addCookie(cookie);
 			cookies.add(cookie);
@@ -2821,7 +2821,7 @@ public class BaseWicketTester
 		@Override
 		public void writeMetaData(WebResponse webResponse)
 		{
-			for (Cookie cookie : cookies)
+			for (org.apache.wicket.protocol.Cookie cookie : cookies)
 			{
 				webResponse.addCookie(cookie);
 			}

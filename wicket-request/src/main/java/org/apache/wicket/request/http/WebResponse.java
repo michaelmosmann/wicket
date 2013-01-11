@@ -18,8 +18,7 @@ package org.apache.wicket.request.http;
 
 import java.io.IOException;
 
-import javax.servlet.http.Cookie;
-
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.string.Strings;
@@ -194,9 +193,9 @@ public abstract class WebResponse extends Response
 
 	/**
 	 * Make this response cacheable
-	 * <p/> 
-	 * when trying to enable caching for web pages check this out: 
-	 * <a href="https://issues.apache.org/jira/browse/WICKET-4357">WICKET-4357</a>
+	 * <p/>
+	 * when trying to enable caching for web pages check this out: <a
+	 * href="https://issues.apache.org/jira/browse/WICKET-4357">WICKET-4357</a>
 	 * 
 	 * @param duration
 	 *            maximum duration before the response must be invalidated by any caches. It should
@@ -204,7 +203,7 @@ public abstract class WebResponse extends Response
 	 *            href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">RFC-2616</a>.
 	 * @param scope
 	 *            controls which caches are allowed to cache the response
-	 *            
+	 * 
 	 * @see WebResponse#MAX_CACHE_DURATION
 	 */
 	public void enableCaching(Duration duration, final WebResponse.CacheScope scope)
@@ -229,7 +228,7 @@ public abstract class WebResponse extends Response
 
 		// Set cache scope
 		setHeader("Cache-Control", scope.cacheControl);
-		
+
 		// Set maximum age for caching in seconds (rounded)
 		addHeader("Cache-Control", "max-age=" + Math.round(duration.seconds()));
 

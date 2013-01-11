@@ -16,9 +16,9 @@
  */
 package org.apache.wicket.util.cookies;
 
-import javax.servlet.http.Cookie;
 
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;

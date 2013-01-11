@@ -22,20 +22,21 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.http.RequestUtils;
+import org.apache.wicket.protocol.servlet.HttpServletCookies;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.util.lang.Generics;
 import org.apache.wicket.util.time.Time;
 
 /**
- * A {@link WebRequest} implementation used for the lifecycle of a web socket
- * connection. It keeps a copy of the HttpServletRequest provided by the web container
- * during the creation of the web socket connection (the http upgrade).
- *
+ * A {@link WebRequest} implementation used for the lifecycle of a web socket connection. It keeps a
+ * copy of the HttpServletRequest provided by the web container during the creation of the web
+ * socket connection (the http upgrade).
+ * 
  * @since 6.0
  */
 public class WebSocketRequest extends WebRequest
@@ -44,19 +45,19 @@ public class WebSocketRequest extends WebRequest
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param req
-	 *      the copy of the HttpServletRequest used for the upgrade of the HTTP protocol
+	 *            the copy of the HttpServletRequest used for the upgrade of the HTTP protocol
 	 */
 	public WebSocketRequest(HttpServletRequest req)
 	{
-		this.request = req;
+		request = req;
 	}
 
 	@Override
 	public List<Cookie> getCookies()
 	{
-		List<Cookie> cookies = Arrays.asList(request.getCookies());
+		List<Cookie> cookies = Arrays.asList(HttpServletCookies.fromServletCookies(request.getCookies()));
 		return cookies;
 	}
 
@@ -69,7 +70,7 @@ public class WebSocketRequest extends WebRequest
 		{
 			h.add(headers.nextElement());
 		}
-		
+
 		return h;
 	}
 

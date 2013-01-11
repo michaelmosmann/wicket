@@ -21,8 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
-
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.util.time.Time;

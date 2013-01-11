@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.http.RequestUtils;
 import org.apache.wicket.request.IRequestParameters;

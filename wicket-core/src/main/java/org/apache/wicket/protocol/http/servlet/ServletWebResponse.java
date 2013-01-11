@@ -18,9 +18,8 @@ package org.apache.wicket.protocol.http.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.UrlRenderer;

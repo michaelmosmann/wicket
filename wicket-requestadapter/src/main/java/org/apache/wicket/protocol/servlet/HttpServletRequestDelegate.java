@@ -26,9 +26,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.protocol.IHttpSession;
 
@@ -51,7 +51,7 @@ public class HttpServletRequestDelegate implements IHttpRequest
 	@_HaveToRefactor
 	public Cookie[] getCookies()
 	{
-		return request.getCookies();
+		return HttpServletCookies.fromServletCookies(request.getCookies());
 	}
 
 	@Override

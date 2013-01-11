@@ -7,8 +7,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.protocol.servlet._HaveToRefactor;
 
 public class HttpRequestWrapper implements IHttpRequest
@@ -199,5 +197,23 @@ public class HttpRequestWrapper implements IHttpRequest
 	public String[] getParameterValues(String name)
 	{
 		return request.getParameterValues(name);
+	}
+
+	@Override
+	public Enumeration<Locale> getLocales()
+	{
+		return request.getLocales();
+	}
+
+	@Override
+	public String getRequestedSessionId()
+	{
+		return request.getRequestedSessionId();
+	}
+
+	@Override
+	public String getServletPath()
+	{
+		return request.getServletPath();
 	}
 }

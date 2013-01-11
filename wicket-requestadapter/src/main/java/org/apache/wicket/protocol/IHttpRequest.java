@@ -23,10 +23,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-
-import org.apache.wicket.protocol.servlet._HaveToRefactor;
-
 public interface IHttpRequest
 {
 	String getCharacterEncoding();
@@ -49,7 +45,6 @@ public interface IHttpRequest
 
 	String getQueryString();
 
-	@_HaveToRefactor
 	Cookie[] getCookies();
 
 	Locale getLocale();
@@ -89,5 +84,11 @@ public interface IHttpRequest
 	Enumeration getParameterNames();
 
 	String[] getParameterValues(String name);
+
+	Enumeration<Locale> getLocales();
+
+	String getRequestedSessionId();
+
+	String getServletPath();
 
 }

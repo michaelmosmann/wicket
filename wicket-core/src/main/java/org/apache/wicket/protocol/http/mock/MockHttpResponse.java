@@ -20,12 +20,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -34,11 +32,12 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.Cookie;
+import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.http.IMetaDataBufferingWebResponse;
-import org.apache.wicket.protocol.servlet.HttpServletCookies;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -49,7 +48,8 @@ import org.apache.wicket.util.value.ValueMap;
  * 
  * @author Chris Turner
  */
-public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBufferingWebResponse
+@_HaveToRefactor
+public class MockHttpResponse implements IHttpResponse, IMetaDataBufferingWebResponse
 {
 	private static final int MODE_BINARY = 1;
 
@@ -88,7 +88,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 	 * 
 	 * @param servletRequest
 	 */
-	public MockHttpServletResponse(MockHttpServletRequest servletRequest)
+	public MockHttpResponse(MockHttpServletRequest servletRequest)
 	{
 		this.servletRequest = servletRequest;
 		initialize();
@@ -119,20 +119,20 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		cookies.add(cookie);
 	}
 
-	/**
-	 * Add a date header.
-	 * 
-	 * @param name
-	 *            The header value
-	 * @param l
-	 *            The long value
-	 */
-	@Override
-	public void addDateHeader(String name, long l)
-	{
-		DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
-		addHeader(name, df.format(new Date(l)));
-	}
+// /**
+// * Add a date header.
+// *
+// * @param name
+// * The header value
+// * @param l
+// * The long value
+// */
+// @Override
+// public void addDateHeader(String name, long l)
+// {
+// DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
+// addHeader(name, df.format(new Date(l)));
+// }
 
 	/**
 	 * Add the given header value, including an additional entry if one already exists.
@@ -155,46 +155,46 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		list.add(value);
 	}
 
-	/**
-	 * Add an int header value.
-	 * 
-	 * @param name
-	 *            The header name
-	 * @param i
-	 *            The value
-	 */
-	@Override
-	public void addIntHeader(final String name, final int i)
-	{
-		addHeader(name, "" + i);
-	}
+// /**
+// * Add an int header value.
+// *
+// * @param name
+// * The header name
+// * @param i
+// * The value
+// */
+// @Override
+// public void addIntHeader(final String name, final int i)
+// {
+// addHeader(name, "" + i);
+// }
+//
+// /**
+// * Check if the response contains the given header name.
+// *
+// * @param name
+// * The name to check
+// * @return Whether header in response or not
+// */
+// @Override
+// public boolean containsHeader(final String name)
+// {
+// return headers.containsKey(name);
+// }
 
-	/**
-	 * Check if the response contains the given header name.
-	 * 
-	 * @param name
-	 *            The name to check
-	 * @return Whether header in response or not
-	 */
-	@Override
-	public boolean containsHeader(final String name)
-	{
-		return headers.containsKey(name);
-	}
-
-	/**
-	 * Encode the redirectLocation URL. Does no changes as this test implementation uses cookie
-	 * based url tracking.
-	 * 
-	 * @param url
-	 *            The url to encode
-	 * @return The encoded url
-	 */
-	@Override
-	public String encodeRedirectUrl(final String url)
-	{
-		return url;
-	}
+// /**
+// * Encode the redirectLocation URL. Does no changes as this test implementation uses cookie
+// * based url tracking.
+// *
+// * @param url
+// * The url to encode
+// * @return The encoded url
+// */
+// @Override
+// public String encodeRedirectUrl(final String url)
+// {
+// return url;
+// }
 
 	/**
 	 * Encode the redirectLocation URL. Does no changes as this test implementation uses cookie
@@ -210,18 +210,18 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		return url;
 	}
 
-	/**
-	 * Encode the URL. Does no changes as this test implementation uses cookie based url tracking.
-	 * 
-	 * @param url
-	 *            The url to encode
-	 * @return The encoded url
-	 */
-	@Override
-	public String encodeUrl(final String url)
-	{
-		return url;
-	}
+// /**
+// * Encode the URL. Does no changes as this test implementation uses cookie based url tracking.
+// *
+// * @param url
+// * The url to encode
+// * @return The encoded url
+// */
+// @Override
+// public String encodeUrl(final String url)
+// {
+// return url;
+// }
 
 	/**
 	 * Encode the URL. Does no changes as this test implementation uses cookie based url tracking.
@@ -256,38 +256,38 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		return byteStream.toByteArray();
 	}
 
-	/**
-	 * Return the current buffer size
-	 * 
-	 * @return The buffer size
-	 */
-	@Override
-	public int getBufferSize()
-	{
-		if (mode == MODE_NONE)
-		{
-			return 0;
-		}
-		else if (mode == MODE_BINARY)
-		{
-			return byteStream.size();
-		}
-		else
-		{
-			return stringWriter.getBuffer().length();
-		}
-	}
+// /**
+// * Return the current buffer size
+// *
+// * @return The buffer size
+// */
+// @Override
+// public int getBufferSize()
+// {
+// if (mode == MODE_NONE)
+// {
+// return 0;
+// }
+// else if (mode == MODE_BINARY)
+// {
+// return byteStream.size();
+// }
+// else
+// {
+// return stringWriter.getBuffer().length();
+// }
+// }
 
-	/**
-	 * Get the character encoding of the response.
-	 * 
-	 * @return The character encoding
-	 */
-	@Override
-	public String getCharacterEncoding()
-	{
-		return characterEncoding;
-	}
+// /**
+// * Get the character encoding of the response.
+// *
+// * @return The character encoding
+// */
+// @Override
+// public String getCharacterEncoding()
+// {
+// return characterEncoding;
+// }
 
 
 	/**
@@ -358,16 +358,16 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		return headers.keySet();
 	}
 
-	/**
-	 * Get the encoded locale
-	 * 
-	 * @return The locale
-	 */
-	@Override
-	public Locale getLocale()
-	{
-		return locale;
-	}
+// /**
+// * Get the encoded locale
+// *
+// * @return The locale
+// */
+// @Override
+// public Locale getLocale()
+// {
+// return locale;
+// }
 
 	/**
 	 * Get the output stream for writing binary data from the servlet.
@@ -503,21 +503,21 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		initialize();
 	}
 
-	/**
-	 * Clears the buffer.
-	 */
-	@Override
-	public void resetBuffer()
-	{
-		if (mode == MODE_BINARY)
-		{
-			byteStream.reset();
-		}
-		else if (mode == MODE_TEXT)
-		{
-			stringWriter.getBuffer().delete(0, stringWriter.getBuffer().length());
-		}
-	}
+// /**
+// * Clears the buffer.
+// */
+// @Override
+// public void resetBuffer()
+// {
+// if (mode == MODE_BINARY)
+// {
+// byteStream.reset();
+// }
+// else if (mode == MODE_TEXT)
+// {
+// stringWriter.getBuffer().delete(0, stringWriter.getBuffer().length());
+// }
+// }
 
 	/**
 	 * Send an error code. This implementation just sets the internal error state information.
@@ -608,40 +608,40 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		status = HttpServletResponse.SC_FOUND;
 	}
 
-	/**
-	 * Method ignored.
-	 * 
-	 * @param size
-	 *            The size
-	 */
-	@Override
-	public void setBufferSize(final int size)
-	{
-	}
-
-	/**
-	 * Set the character encoding.
-	 * 
-	 * @param characterEncoding
-	 *            The character encoding
-	 */
-	@Override
-	public void setCharacterEncoding(final String characterEncoding)
-	{
-		this.characterEncoding = characterEncoding;
-	}
-
-	/**
-	 * Set the content length.
-	 * 
-	 * @param length
-	 *            The length
-	 */
-	@Override
-	public void setContentLength(final int length)
-	{
-		setIntHeader("Content-Length", length);
-	}
+// /**
+// * Method ignored.
+// *
+// * @param size
+// * The size
+// */
+// @Override
+// public void setBufferSize(final int size)
+// {
+// }
+//
+// /**
+// * Set the character encoding.
+// *
+// * @param characterEncoding
+// * The character encoding
+// */
+// @Override
+// public void setCharacterEncoding(final String characterEncoding)
+// {
+// this.characterEncoding = characterEncoding;
+// }
+//
+// /**
+// * Set the content length.
+// *
+// * @param length
+// * The length
+// */
+// @Override
+// public void setContentLength(final int length)
+// {
+// setIntHeader("Content-Length", length);
+// }
 
 	/**
 	 * Set the content type.
@@ -655,14 +655,14 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		setHeader("Content-Type", type);
 	}
 
-	/**
-	 * @return value of content-type header
-	 */
-	@Override
-	public String getContentType()
-	{
-		return getHeader("Content-Type");
-	}
+// /**
+// * @return value of content-type header
+// */
+// @Override
+// public String getContentType()
+// {
+// return getHeader("Content-Type");
+// }
 
 	/**
 	 * Set a date header.
@@ -782,31 +782,31 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		headers.put(name, l);
 	}
 
-	/**
-	 * Set an int header value.
-	 * 
-	 * @param name
-	 *            The header name
-	 * @param i
-	 *            The value
-	 */
-	@Override
-	public void setIntHeader(final String name, final int i)
-	{
-		setHeader(name, "" + i);
-	}
+// /**
+// * Set an int header value.
+// *
+// * @param name
+// * The header name
+// * @param i
+// * The value
+// */
+// @Override
+// public void setIntHeader(final String name, final int i)
+// {
+// setHeader(name, "" + i);
+// }
 
-	/**
-	 * Set the locale in the response header.
-	 * 
-	 * @param locale
-	 *            The locale
-	 */
-	@Override
-	public void setLocale(final Locale locale)
-	{
-		this.locale = locale;
-	}
+// /**
+// * Set the locale in the response header.
+// *
+// * @param locale
+// * The locale
+// */
+// @Override
+// public void setLocale(final Locale locale)
+// {
+// this.locale = locale;
+// }
 
 	/**
 	 * Set the status for this response.
@@ -820,21 +820,21 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 		this.status = status;
 	}
 
-	/**
-	 * Set the status for this response.
-	 * 
-	 * @param status
-	 *            The status
-	 * @param msg
-	 *            The message
-	 * @deprecated
-	 */
-	@Override
-	@Deprecated
-	public void setStatus(final int status, final String msg)
-	{
-		setStatus(status);
-	}
+// /**
+// * Set the status for this response.
+// *
+// * @param status
+// * The status
+// * @param msg
+// * The message
+// * @deprecated
+// */
+// @Override
+// @Deprecated
+// public void setStatus(final int status, final String msg)
+// {
+// setStatus(status);
+// }
 
 	/**
 	 * @deprecated use {@link #getDocument()}
@@ -876,7 +876,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IMetaDataBu
 	{
 		for (Cookie cookie : cookies)
 		{
-			webResponse.addCookie(HttpServletCookies.fromServletCookie(cookie));
+			webResponse.addCookie(cookie);
 		}
 		for (String name : headers.keySet())
 		{

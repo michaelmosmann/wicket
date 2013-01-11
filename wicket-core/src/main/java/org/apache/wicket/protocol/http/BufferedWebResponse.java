@@ -23,10 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.protocol.Cookie;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.response.filter.IResponseFilter;
