@@ -19,6 +19,7 @@ package org.apache.wicket.request;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.request.parameter.CombinedRequestParametersAdapter;
 import org.apache.wicket.request.parameter.EmptyRequestParameters;
 import org.apache.wicket.request.parameter.UrlRequestParametersAdapter;
@@ -251,5 +252,6 @@ public abstract class Request
 	 * 
 	 * @return low-level container request object, or {@code null} if none
 	 */
+	@_HaveToRefactor
 	public abstract Object getContainerRequest();
 }

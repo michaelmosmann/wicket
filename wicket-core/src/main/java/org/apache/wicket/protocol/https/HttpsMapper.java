@@ -16,10 +16,9 @@
  */
 package org.apache.wicket.protocol.https;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Session;
 import org.apache.wicket.core.request.handler.IPageClassRequestHandler;
+import org.apache.wicket.protocol.IHttpRequest;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
@@ -136,7 +135,7 @@ public class HttpsMapper implements IRequestMapper
 	 */
 	protected String createRedirectUrl(IRequestHandler handler, Request request, Scheme scheme)
 	{
-		HttpServletRequest req = (HttpServletRequest)((WebRequest)request).getContainerRequest();
+		IHttpRequest req = (IHttpRequest)((WebRequest)request).getContainerRequest();
 		String url = scheme.urlName() + "://";
 		url += req.getServerName();
 		if (!scheme.usesStandardPort(config))
@@ -200,7 +199,7 @@ public class HttpsMapper implements IRequestMapper
 	 */
 	protected Scheme getSchemeOf(Request request)
 	{
-		HttpServletRequest req = (HttpServletRequest) request.getContainerRequest();
+		IHttpRequest req = (IHttpRequest)request.getContainerRequest();
 
 		if ("https".equalsIgnoreCase(req.getScheme()))
 		{

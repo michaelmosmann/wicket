@@ -364,9 +364,7 @@ public class WicketFilterTest extends Assert
 	public void ignorePaths() throws Exception
 	{
 		application = spy(new MockApplication());
-		WicketFilter filter = mock(WicketFilter.class);
 
-		filter.init(new FilterTestingConfig());
 
 		HttpServletRequest request = mock(HttpServletRequest.class);
 		when(request.getLocale()).thenReturn(new Locale("bg", "BG"));
@@ -387,8 +385,17 @@ public class WicketFilterTest extends Assert
 		});
 		FilterChain chain = mock(FilterChain.class);
 
-		HttpServletRequestDelegate requestDelegate = new HttpServletRequestDelegate(request);
-		when(filter.createRequestDelegate(request)).thenReturn(requestDelegate);
+		final HttpServletRequestDelegate requestDelegate = new HttpServletRequestDelegate(request);
+		WicketFilter filter = new WicketFilter()
+		{
+			@Override
+			protected HttpServletRequestDelegate createRequestDelegate(
+				HttpServletRequest httpServletRequest)
+			{
+				return requestDelegate;
+			}
+		};
+		filter.init(false, new FilterTestingConfig());
 
 		// execute 3 requests - 1 for bla.js, 1 for bla.css and 1 for bla.img
 		for (int i = 0; i < 3; i++)

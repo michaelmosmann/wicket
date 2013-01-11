@@ -34,6 +34,8 @@ import org.apache.wicket.Session;
 import org.apache.wicket.markup.MarkupParser;
 import org.apache.wicket.protocol.http.IRequestLogger;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
+import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
@@ -47,6 +49,7 @@ import org.slf4j.LoggerFactory;
  * @author Eelco Hillenius
  * @author Matej Knopp
  */
+@_HaveToRefactor
 public class HttpSessionStore implements ISessionStore
 {
 	/** log. */
@@ -69,14 +72,16 @@ public class HttpSessionStore implements ISessionStore
 	 * @param request
 	 * @return The http servlet request
 	 */
+	@_HaveToRefactor
 	protected final HttpServletRequest getHttpServletRequest(final Request request)
 	{
 		Object containerRequest = request.getContainerRequest();
-		if (containerRequest == null || (containerRequest instanceof HttpServletRequest) == false)
+		if (containerRequest == null ||
+			(containerRequest instanceof HttpServletRequestDelegate) == false)
 		{
 			throw new IllegalArgumentException("Request must be ServletWebRequest");
 		}
-		return (HttpServletRequest)containerRequest;
+		return ((HttpServletRequestDelegate)containerRequest).getHttpServletRequest();
 	}
 
 	/**
@@ -457,7 +462,7 @@ public class HttpSessionStore implements ISessionStore
 			{
 				if (sessionStore instanceof HttpSessionStore)
 				{
-					((HttpSessionStore) sessionStore).onUnbind(sessionId);
+					((HttpSessionStore)sessionStore).onUnbind(sessionId);
 				}
 
 				for (UnboundListener listener : sessionStore.getUnboundListener())
