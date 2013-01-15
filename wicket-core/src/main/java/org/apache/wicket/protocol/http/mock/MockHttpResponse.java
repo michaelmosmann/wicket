@@ -655,14 +655,14 @@ public class MockHttpResponse implements IHttpResponse, IMetaDataBufferingWebRes
 		setHeader("Content-Type", type);
 	}
 
-// /**
-// * @return value of content-type header
-// */
-// @Override
-// public String getContentType()
-// {
-// return getHeader("Content-Type");
-// }
+	/**
+	 * @return value of content-type header
+	 */
+	@Override
+	public String getContentType()
+	{
+		return getHeader("Content-Type");
+	}
 
 	/**
 	 * Set a date header.

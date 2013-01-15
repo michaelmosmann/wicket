@@ -8,12 +8,12 @@ public class HttpSessionCopy implements IHttpSession
 //	private final long creationTime;
 	private final ConcurrentHashMap<String, Object> attributes;
 	private final String sessionId;
-//	private final ServletContext servletContext;
+	private final IHttpContext servletContext;
 	private int maxInactiveInterval;
 
 	public HttpSessionCopy(final IHttpSession originalSession) {
 		this.sessionId = originalSession.getId();
-//		this.servletContext = originalSession.getServletContext();
+		this.servletContext = originalSession.getServletContext();
 //		this.creationTime = originalSession.getCreationTime();
 
 		this.attributes = new ConcurrentHashMap<String, Object>();
@@ -47,10 +47,10 @@ public class HttpSessionCopy implements IHttpSession
 //		return 0;
 //	}
 
-//	@Override
-//	public ServletContext getServletContext() {
-//		return servletContext;
-//	}
+	@Override
+	public IHttpContext getServletContext() {
+		return servletContext;
+	}
 //
 //	@Override
 //	public void setMaxInactiveInterval(int interval) {
@@ -107,10 +107,10 @@ public class HttpSessionCopy implements IHttpSession
 //		attributes.remove(name);
 //	}
 //
-//	// TODO: Not supported for now.
-//	@Override
-//	public void invalidate() {
-//	}
+	// TODO: Not supported for now.
+	@Override
+	public void invalidate() {
+	}
 //
 //	@Override
 //	public boolean isNew() {

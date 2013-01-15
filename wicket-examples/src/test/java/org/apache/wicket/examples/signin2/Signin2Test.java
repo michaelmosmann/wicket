@@ -82,9 +82,15 @@ public class Signin2Test extends Assert
 
 			tester.startPage(SignOut.class);
 			tester.assertRenderedPage(SignOut.class);
+			System.out.println("--------------------");
+			System.out.println(tester.getLastResponseAsString());
 
 			tester.startPage(Home.class);
+			System.out.println("--------------------");
+			System.out.println(tester.getLastResponseAsString());
 			tester.assertRenderedPage(SignIn2.class);
+			System.out.println("--------------------");
+			System.out.println(tester.getLastResponseAsString());
 		}
 		finally
 		{

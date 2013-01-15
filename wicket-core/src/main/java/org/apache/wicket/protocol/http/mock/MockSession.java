@@ -21,8 +21,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
-
+import org.apache.wicket.protocol.IHttpContext;
 import org.apache.wicket.protocol.IHttpSession;
 import org.apache.wicket.protocol.servlet._HaveToRefactor;
 import org.apache.wicket.util.value.ValueMap;
@@ -40,7 +39,7 @@ public class MockSession implements IHttpSession, Serializable
 
 	private final ValueMap attributes = new ValueMap();
 
-	private final transient ServletContext context;
+	private final transient IHttpContext context;
 
 	private final long creationTime = System.currentTimeMillis();
 
@@ -55,7 +54,7 @@ public class MockSession implements IHttpSession, Serializable
 	 * 
 	 * @param context
 	 */
-	public MockSession(final ServletContext context)
+	public MockSession(final IHttpContext context)
 	{
 		this.context = context;
 	}
@@ -129,16 +128,16 @@ public class MockSession implements IHttpSession, Serializable
 // return 0;
 // }
 
-// /**
-// * Return the servlet context for the session.
-// *
-// * @return The servlet context
-// */
-// @Override
-// public ServletContext getServletContext()
-// {
-// return context;
-// }
+	/**
+	 * Return the servlet context for the session.
+	 * 
+	 * @return The servlet context
+	 */
+	@Override
+	public IHttpContext getServletContext()
+	{
+		return context;
+	}
 
 // /**
 // * NOT USED.
@@ -182,15 +181,15 @@ public class MockSession implements IHttpSession, Serializable
 // return attributes.keySet().toArray(result);
 // }
 //
-// /**
-// * Invalidate the session.
-// */
-// @Override
-// public void invalidate()
-// {
-// attributes.clear();
-// }
-//
+	/**
+	 * Invalidate the session.
+	 */
+	@Override
+	public void invalidate()
+	{
+		attributes.clear();
+	}
+
 // /**
 // * Check if the session is new.
 // *

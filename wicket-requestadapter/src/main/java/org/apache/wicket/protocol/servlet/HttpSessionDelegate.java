@@ -2,10 +2,10 @@ package org.apache.wicket.protocol.servlet;
 
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import org.apache.wicket.protocol.IHttpContext;
 import org.apache.wicket.protocol.IHttpSession;
 
 public class HttpSessionDelegate implements IHttpSession
@@ -33,9 +33,10 @@ public class HttpSessionDelegate implements IHttpSession
 		return session.getLastAccessedTime();
 	}
 
-	public ServletContext getServletContext()
+	@Override
+	public IHttpContext getServletContext()
 	{
-		return session.getServletContext();
+		return new ServletContextDelegate(session.getServletContext());
 	}
 
 	public void setMaxInactiveInterval(int interval)
@@ -97,6 +98,7 @@ public class HttpSessionDelegate implements IHttpSession
 		session.removeValue(name);
 	}
 
+	@Override
 	public void invalidate()
 	{
 		session.invalidate();

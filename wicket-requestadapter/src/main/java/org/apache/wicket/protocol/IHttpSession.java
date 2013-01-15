@@ -14,5 +14,10 @@ public interface IHttpSession
 	String getId();
 
 	Enumeration getAttributeNames();
+
+	IHttpContext getServletContext();
+
+	void invalidate();
+
 	
 }
