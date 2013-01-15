@@ -99,6 +99,7 @@ import org.apache.wicket.protocol.IHttpResponse;
 import org.apache.wicket.protocol.http.IMetaDataBufferingWebResponse;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
+import org.apache.wicket.protocol.http.mock.Cookies;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpServletResponse;
 import org.apache.wicket.protocol.http.mock.MockHttpSession;
@@ -189,8 +190,6 @@ public class BaseWicketTester
 	private IRequestHandler forcedHandler;
 
 	private IFeedbackMessageFilter originalFeedbackMessageCleanupFilter;
-	// Simulates the cookies maintained by the browser
-	private final List<Cookie> browserCookies = Generics.newArrayList();
 
 	private ComponentInPage componentInPage;
 
@@ -375,7 +374,8 @@ public class BaseWicketTester
 			request.setServerPort(lastRequest.getServerPort());
 		}
 
-		transferCookies();
+		Cookies.set(Cookies.notExpiredCookies(Cookies.lastValue(Cookies.allOf(getLastRequest(),
+			getLastResponse()))), request);
 
 		response = new MockHttpServletResponse(request);
 
@@ -420,31 +420,6 @@ public class BaseWicketTester
 		getSession().detach();
 		application.getApplicationSettings().setFeedbackMessageCleanupFilter(
 			IFeedbackMessageFilter.NONE);
-	}
-
-	/**
-	 * Copies all cookies with a positive age from the last response to the request that is going to
-	 * be used for the next cycle.
-	 */
-	private void transferCookies()
-	{
-		if (lastResponse != null)
-		{
-			List<Cookie> cookies = lastResponse.getCookies();
-			if (cookies != null)
-			{
-				for (Cookie cookie : cookies)
-				{
-					// maxAge == -1 -> means session cookie
-					// maxAge == 0 -> delete the cookie
-					// maxAge > 0 -> the cookie will expire after this age
-					if (cookie.getMaxAge() != 0)
-					{
-						request.addCookie(cookie);
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -635,16 +610,6 @@ public class BaseWicketTester
 
 		try
 		{
-			if (getLastResponse() != null)
-			{
-				// transfer cookies from previous response to this request, quirky but how old stuff
-				// worked...
-				for (Cookie cookie : getLastResponse().getCookies())
-				{
-					request.addCookie(cookie);
-				}
-			}
-
 			applyRequest();
 			requestCycle.scheduleRequestHandlerAfterCurrent(null);
 
@@ -705,6 +670,8 @@ public class BaseWicketTester
 
 					request.setUrl(mergedURL);
 				}
+
+				Cookies.set(Cookies.notExpiredCookies(lastResponse), response);
 
 				processRequest(null, null, true);
 
@@ -789,16 +756,6 @@ public class BaseWicketTester
 
 		previousRequests.add(request);
 		previousResponses.add(response);
-
-		// transfer cookies from previous request to previous response, quirky but how old stuff
-		// worked...
-		if (lastRequest.getCookies() != null)
-		{
-			for (Cookie cookie : lastRequest.getCookies())
-			{
-				lastResponse.addCookie(cookie);
-			}
-		}
 	}
 
 	/**
