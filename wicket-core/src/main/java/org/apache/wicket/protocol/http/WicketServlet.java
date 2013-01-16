@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.protocol.servlet._DependsOnJavaxServlet;
 import org.apache.wicket.util.io.Streams;
 import org.apache.wicket.util.string.Strings;
 import org.slf4j.Logger;
@@ -109,6 +110,7 @@ import org.slf4j.LoggerFactory;
  * @author Igor Vaynberg (ivaynberg)
  * @author Al Maw
  */
+@_DependsOnJavaxServlet
 public class WicketServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;

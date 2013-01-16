@@ -33,6 +33,7 @@ import org.apache.wicket.ThreadContext;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.servlet.HttpServletRequestDelegate;
 import org.apache.wicket.protocol.servlet.HttpServletResponseDelegate;
+import org.apache.wicket.protocol.servlet._DependsOnJavaxServlet;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
@@ -61,6 +62,7 @@ import org.slf4j.LoggerFactory;
  * @author jcompagner
  * @author Matej Knopp
  */
+@_DependsOnJavaxServlet
 public class WicketFilter implements Filter
 {
 	private static final Logger log = LoggerFactory.getLogger(WicketFilter.class);
